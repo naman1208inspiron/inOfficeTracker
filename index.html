@@ -145,7 +145,8 @@
 
         .date-display {
             text-align: center;
-            font-size: var(--font-size-lg);
+            font-size: 24px !important;
+            /* Using !important to override and fixed size */
             color: var(--color-text-secondary);
             margin-bottom: var(--space-24);
             font-weight: var(--font-weight-medium);
@@ -454,9 +455,15 @@
                 </h3>
                 <div class="mode-selector">
                     <button class="mode-btn" id="wfh-btn">🏠 Work From Home</button>
-                    <button class="mode-btn" id="office-btn">🏢 Office</button>
-                    <button class="mode-btn" id="holiday-btn">🏖️ Holiday</button>
+                    <button class="mode-btn" id="office-btn">💼 Office</button>
+                    <button class="mode-btn" id="holiday-btn">🏖️ Holiday - hurrah!!</button>
+
                 </div>
+                <!-- ADD NOTIFICATION BUTTON HERE -->
+                <button id="enable-notifications" class="btn btn--secondary btn--full-width"
+                    style="margin-top: var(--space-16); display: none;">
+                    🔔 Enable Notifications
+                </button>
             </div>
 
             <div id="wfh-screen" class="card hidden">
@@ -489,7 +496,7 @@
 
             <div id="holiday-screen" class="card hidden">
                 <div class="wfh-message">
-                    <h3>🏖️ Holiday Logged</h3>
+                    <h3>🏖️ Holiday Logged - Enjoy!!!</h3>
                     <p>8 hours automatically logged as office time</p>
                     <button class="btn btn-secondary" id="uncheck-holiday-btn">Uncheck Holiday</button>
                 </div>
@@ -678,6 +685,7 @@
         // Update timer display
         function updateTimerDisplay() {
             document.getElementById('timer-display').textContent = formatTime(currentSeconds);
+
         }
 
         // Start timer
@@ -869,7 +877,7 @@
             const officeInsight = document.createElement('div');
             officeInsight.className = 'insight-item';
             officeInsight.innerHTML = `
-                    <span class="insight-label">Office Days (8+ hrs completed)</span>
+                    <span class="insight-label">Office Days (8+ hrs)</span>
                     <span class="insight-value ${officeDays8Plus >= requiredOfficeDays ? 'success' : 'warning'}">${officeDays8Plus}/${requiredOfficeDays}</span>
                 `;
             insightsContainer.appendChild(officeInsight);
@@ -1074,11 +1082,69 @@
         manifestLink.href = manifestURL;
         document.head.appendChild(manifestLink);
 
+        // ========== PWA: SERVICE WORKER REGISTRATION ==========
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js');
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
             });
         }
+
+        // ========== NOTIFICATION FUNCTIONS ==========
+        async function requestNotificationPermission() {
+            if ('Notification' in window) {
+                const permission = await Notification.requestPermission();
+                return permission === 'granted';
+            }
+            return false;
+        }
+
+        function showNotification(title, body, options = {}) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                    navigator.serviceWorker.ready.then(registration => {
+                        registration.showNotification(title, {
+                            body: body,
+                            icon: '/icon-192.png',
+                            badge: '/icon-192.png',
+                            vibrate: [200, 100, 200],
+                            ...options
+                        });
+                    });
+                } else {
+                    new Notification(title, {
+                        body: body,
+                        icon: '/icon-192.png',
+                        ...options
+                    });
+                }
+            }
+        }
+
+        // ========== CHECK 8 HOURS NOTIFICATION ==========
+        function checkEightHoursNotification(todayData, today) {
+            if (todayData && todayData.mode === 'office' && todayData.hours >= 8) {
+                const storedNotified = localStorage.getItem('notified_8hrs_' + today);
+                if (!storedNotified) {
+                    showNotification(
+                        '🎉 8 Hours Completed!',
+                        `Great job! You've completed ${todayData.hours.toFixed(1)} hours in office today.`,
+                        { tag: 'eight-hours-complete', requireInteraction: true }
+                    );
+                    localStorage.setItem('notified_8hrs_' + today, 'true');
+                }
+            }
+        }
+
+
+
+
+
     </script>
 </body>
 
