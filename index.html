@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +9,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Office Timer">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect fill='%2321808d' width='192' height='192'/%3E%3Cpath fill='%23fcfcf9' d='M104 48c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24h16c13.3 0 24-10.7 24-24V72c0-13.3-10.7-24-24-24H88zm0 16h8v8h-8v-8zm0 24h8v40h-8V88z'/%3E%3C/svg%3E">
+    <link rel="apple-touch-icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect fill='%2321808d' width='192' height='192'/%3E%3Cpath fill='%23fcfcf9' d='M104 48c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24h16c13.3 0 24-10.7 24-24V72c0-13.3-10.7-24-24-24H88zm0 16h8v8h-8v-8zm0 24h8v40h-8V88z'/%3E%3C/svg%3E">
+    <link rel="manifest" href="/manifest.json">
+
     <style>
         :root {
             --color-white: rgba(255, 255, 255, 1);
@@ -435,6 +439,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Today Tab -->
     <div id="today-tab" class="tab-content active">
@@ -445,7 +450,8 @@
             </div>
 
             <div id="mode-selection" class="card">
-                <h3 style="margin-bottom: var(--space-16); font-size: var(--font-size-lg);">Where are you working today?</h3>
+                <h3 style="margin-bottom: var(--space-16); font-size: var(--font-size-lg);">Where are you working today?
+                </h3>
                 <div class="mode-selector">
                     <button class="mode-btn" id="wfh-btn">🏠 Work From Home</button>
                     <button class="mode-btn" id="office-btn">🏢 Office</button>
@@ -466,9 +472,10 @@
                 <div class="timer-section">
                     <h3 style="margin-bottom: var(--space-16); font-size: var(--font-size-lg);">Office Time</h3>
                     <div class="timer-display" id="timer-display">00:00:00</div>
-                    
+
                     <div id="start-prompt">
-                        <p style="margin-bottom: var(--space-16); color: var(--color-text-secondary);">Ready to start tracking your office hours?</p>
+                        <p style="margin-bottom: var(--space-16); color: var(--color-text-secondary);">Ready to start
+                            tracking your office hours?</p>
                         <button class="btn btn-primary" id="start-timer-btn">▶️ Start Timer</button>
                         <button class="btn btn-secondary" id="back-from-office-btn">← Back to Options</button>
                     </div>
@@ -621,7 +628,7 @@
             document.getElementById('wfh-screen').classList.remove('hidden');
             document.getElementById('office-screen').classList.add('hidden');
             document.getElementById('holiday-screen').classList.add('hidden');
-            
+
             const todayKey = getTodayKey();
             appData.logs[todayKey] = { mode: 'wfh', seconds: 0 };
             saveData();
@@ -633,7 +640,7 @@
             document.getElementById('wfh-screen').classList.add('hidden');
             document.getElementById('office-screen').classList.remove('hidden');
             document.getElementById('holiday-screen').classList.add('hidden');
-            
+
             const todayKey = getTodayKey();
             if (!appData.logs[todayKey]) {
                 appData.logs[todayKey] = { mode: 'office', seconds: 0 };
@@ -647,7 +654,7 @@
             document.getElementById('wfh-screen').classList.add('hidden');
             document.getElementById('office-screen').classList.add('hidden');
             document.getElementById('holiday-screen').classList.remove('hidden');
-            
+
             const todayKey = getTodayKey();
             appData.logs[todayKey] = { mode: 'holiday', seconds: 8 * 3600 }; // 8 hours counted as office
             saveData();
@@ -677,20 +684,20 @@
         function startTimer() {
             document.getElementById('start-prompt').classList.add('hidden');
             document.getElementById('timer-controls').classList.remove('hidden');
-            
+
             // Load existing time for today if available
             const todayKey = getTodayKey();
             if (appData.logs[todayKey] && appData.logs[todayKey].seconds) {
                 currentSeconds = appData.logs[todayKey].seconds;
                 updateTimerDisplay();
             }
-            
+
             isPaused = false;
             timerInterval = setInterval(() => {
                 if (!isPaused) {
                     currentSeconds++;
                     updateTimerDisplay();
-                    
+
                     appData.logs[todayKey].seconds = currentSeconds;
                     saveData();
                 }
@@ -710,17 +717,17 @@
                 clearInterval(timerInterval);
                 timerInterval = null;
             }
-            
+
             const todayKey = getTodayKey();
             appData.logs[todayKey].seconds = currentSeconds;
             saveData();
-            
+
             alert(`Office hours logged: ${formatHoursMinutes(currentSeconds)}`);
-            
+
             // Reset pause state and button text
             isPaused = false;
             document.getElementById('pause-timer-btn').textContent = '⏸️ Pause Timer';
-            
+
             // Show start prompt again to allow resuming
             document.getElementById('start-prompt').classList.remove('hidden');
             document.getElementById('timer-controls').classList.add('hidden');
@@ -732,10 +739,10 @@
             const currentDay = today.getDay();
             const monday = new Date(today);
             monday.setDate(today.getDate() - currentDay + (currentDay === 0 ? -6 : 1) + (offset * 7));
-            
+
             const sunday = new Date(monday);
             sunday.setDate(monday.getDate() + 6);
-            
+
             return { monday, sunday };
         }
 
@@ -743,13 +750,13 @@
         function getDatesInWeek(offset = 0) {
             const { monday } = getWeekRange(offset);
             const dates = [];
-            
+
             for (let i = 0; i < 7; i++) {
                 const date = new Date(monday);
                 date.setDate(monday.getDate() + i);
                 dates.push(date);
             }
-            
+
             return dates;
         }
 
@@ -757,17 +764,17 @@
         function updateAnalytics() {
             const { monday, sunday } = getWeekRange(currentWeekOffset);
             const dates = getDatesInWeek(currentWeekOffset);
-            
+
             // Update week range
             const weekRangeText = `${monday.getDate()} ${monday.toLocaleString('en-IN', { month: 'short' })} - ${sunday.getDate()} ${sunday.toLocaleString('en-IN', { month: 'short' })} ${sunday.getFullYear()}`;
             document.getElementById('week-range').textContent = weekRangeText;
-            
+
             // Calculate total hours
             let totalSeconds = 0;
             let officeDays8Plus = 0;
             let wfhDays = 0;
             let holidayDays = 0;
-            
+
             dates.forEach(date => {
                 const key = date.toISOString().split('T')[0];
                 const log = appData.logs[key];
@@ -785,43 +792,43 @@
                     }
                 }
             });
-            
+
             // Update weekly insights
             updateWeeklyInsights(officeDays8Plus, wfhDays, holidayDays, dates);
-            
+
             // Update daily logs
             const dailyLogsContainer = document.getElementById('daily-logs');
             dailyLogsContainer.innerHTML = '';
-            
+
             dates.forEach(date => {
                 const key = date.toISOString().split('T')[0];
                 const log = appData.logs[key];
-                
+
                 // Skip Saturday (6) and Sunday (0)
                 const dayOfWeek = date.getDay();
                 if (dayOfWeek === 0 || dayOfWeek === 6) {
                     return;
                 }
-                
+
                 const dayLog = document.createElement('div');
                 dayLog.className = 'day-log';
-                
+
                 const dayInfo = document.createElement('div');
                 dayInfo.className = 'day-info';
-                
+
                 const dayName = document.createElement('div');
                 dayName.className = 'day-name';
                 dayName.textContent = date.toLocaleDateString('en-IN', { weekday: 'long' });
-                
+
                 const dayDate = document.createElement('div');
                 dayDate.className = 'day-date';
                 dayDate.textContent = date.toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' });
-                
+
                 dayInfo.appendChild(dayName);
                 dayInfo.appendChild(dayDate);
-                
+
                 const dayHours = document.createElement('div');
-                
+
                 if (!log) {
                     dayHours.className = 'day-hours';
                     dayHours.textContent = '-';
@@ -836,7 +843,7 @@
                     dayHours.className = 'day-hours';
                     dayHours.textContent = formatHoursMinutes(log.seconds || 0);
                 }
-                
+
                 dayLog.appendChild(dayInfo);
                 dayLog.appendChild(dayHours);
                 dailyLogsContainer.appendChild(dayLog);
@@ -845,73 +852,73 @@
 
         // Update weekly insights
         function updateWeeklyInsights(officeDays8Plus, wfhDays, holidayDays, dates) {
-                const insightsContainer = document.getElementById('weekly-insights');
-                insightsContainer.innerHTML = '';
-                
-                // Calculate remaining days needed
-                const requiredOfficeDays = 3;
-                const maxWfhDays = 2;
-                const remainingOfficeDays = Math.max(0, requiredOfficeDays - officeDays8Plus);
-                
-                // Current day of week (Monday = 0, Sunday = 6)
-                const today = new Date();
-                const todayInWeek = dates.findIndex(date => date.toDateString() === today.toDateString());
-                const remainingDaysInWeek = Math.max(0, 6 - todayInWeek); // Excluding Sunday
-                
-                // Office compliance
-                const officeInsight = document.createElement('div');
-                officeInsight.className = 'insight-item';
-                officeInsight.innerHTML = `
+            const insightsContainer = document.getElementById('weekly-insights');
+            insightsContainer.innerHTML = '';
+
+            // Calculate remaining days needed
+            const requiredOfficeDays = 3;
+            const maxWfhDays = 2;
+            const remainingOfficeDays = Math.max(0, requiredOfficeDays - officeDays8Plus);
+
+            // Current day of week (Monday = 0, Sunday = 6)
+            const today = new Date();
+            const todayInWeek = dates.findIndex(date => date.toDateString() === today.toDateString());
+            const remainingDaysInWeek = Math.max(0, 6 - todayInWeek); // Excluding Sunday
+
+            // Office compliance
+            const officeInsight = document.createElement('div');
+            officeInsight.className = 'insight-item';
+            officeInsight.innerHTML = `
                     <span class="insight-label">Office Days (8+ hrs completed)</span>
                     <span class="insight-value ${officeDays8Plus >= requiredOfficeDays ? 'success' : 'warning'}">${officeDays8Plus}/${requiredOfficeDays}</span>
                 `;
-                insightsContainer.appendChild(officeInsight);
-                
-                // WFH compliance
-                const wfhInsight = document.createElement('div');
-                wfhInsight.className = 'insight-item';
-                wfhInsight.innerHTML = `
+            insightsContainer.appendChild(officeInsight);
+
+            // WFH compliance
+            const wfhInsight = document.createElement('div');
+            wfhInsight.className = 'insight-item';
+            wfhInsight.innerHTML = `
                     <span class="insight-label">WFH Days used</span>
                     <span class="insight-value ${wfhDays <= maxWfhDays ? 'success' : 'warning'}">${wfhDays}/${maxWfhDays}</span>
                 `;
-                insightsContainer.appendChild(wfhInsight);
-                
-                // Holiday days
-                if (holidayDays > 0) {
-                    const holidayInsight = document.createElement('div');
-                    holidayInsight.className = 'insight-item';
-                    holidayInsight.innerHTML = `
+            insightsContainer.appendChild(wfhInsight);
+
+            // Holiday days
+            if (holidayDays > 0) {
+                const holidayInsight = document.createElement('div');
+                holidayInsight.className = 'insight-item';
+                holidayInsight.innerHTML = `
                         <span class="insight-label">Holiday Days</span>
                         <span class="insight-value">${holidayDays}</span>
                     `;
-                    insightsContainer.appendChild(holidayInsight);
-                }
-                
-                // Recommendation
-                const recommendationInsight = document.createElement('div');
-                recommendationInsight.className = 'insight-item';
-                let recommendation = '';
-                let recommendationClass = 'success';
-                
-                if (remainingOfficeDays > 0) {
-                    if (remainingOfficeDays > remainingDaysInWeek) {
-                        recommendation = `Need ${remainingOfficeDays} more days`;
-                        recommendationClass = 'warning';
-                    } else {
-                        recommendation = `${remainingOfficeDays} more WFO needed`;
-                        recommendationClass = 'warning';
-                    }
+                insightsContainer.appendChild(holidayInsight);
+            }
+
+            // Recommendation
+            const recommendationInsight = document.createElement('div');
+            recommendationInsight.className = 'insight-item';
+            let recommendation = '';
+            let recommendationClass = 'success';
+
+            if (remainingOfficeDays > 0) {
+                if (remainingOfficeDays > remainingDaysInWeek) {
+                    recommendation = `Need ${remainingOfficeDays} more days`;
+                    recommendationClass = 'warning';
                 } else {
-                    recommendation = '✅ Completed!';
-                    recommendationClass = 'success';
+                    recommendation = `${remainingOfficeDays} more WFO needed`;
+                    recommendationClass = 'warning';
                 }
-                
-                recommendationInsight.innerHTML = `
+            } else {
+                recommendation = '✅ Completed!';
+                recommendationClass = 'success';
+            }
+
+            recommendationInsight.innerHTML = `
                     <span class="insight-label">Status</span>
                     <span class="insight-value ${recommendationClass}">${recommendation}</span>
                 `;
-                insightsContainer.appendChild(recommendationInsight);
-            }
+            insightsContainer.appendChild(recommendationInsight);
+        }
 
         // Setup event listeners
         function setupEventListeners() {
@@ -1030,7 +1037,7 @@
                     return self.clients.claim();
                 });
             `;
-            
+
             const blob = new Blob([swCode], { type: 'application/javascript' });
             return URL.createObjectURL(blob);
         }
@@ -1066,6 +1073,13 @@
         manifestLink.rel = 'manifest';
         manifestLink.href = manifestURL;
         document.head.appendChild(manifestLink);
-        </script>
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js');
+            });
+        }
+    </script>
 </body>
+
 </html>
