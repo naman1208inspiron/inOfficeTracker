@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Office Time Tracker</title>
-    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiT2ZmaWNlIFRpbWUgVHJhY2tlciIsInNob3J0X25hbWUiOiJPZmZpY2UgVGltZXIiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiI2ZjZmNmOSIsInRoZW1lX2NvbG9yIjoiIzIxODA4ZCIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnJTIweG1sbnMlM0QnaHR0cCUzQSUyRiUyRnd3dy53MyUub3JnJTJGMjAwMCUyRnN2ZyclMjB2aWV3Qm94JTNEJzAlMjAwJTIwMTkyJTIwMTkyJyUzRSUzQ3JlY3QlMjBmaWxsJTNEJyUyMzIxODA4ZCclMjB3aWR0aCUzRCcxOTInJTIwaGVpZ2h0JTNEJzE5MiclMkYlM0UlM0NwYXRoJTIwZmlsbCUzRCclMjNmY2ZjZjklMjBkJTNEJ00xMDQlMjA0OGMtMTMuMyUyMDAtMjQlMjAxMC43LTI0JTIwMjR2NDhjMCUyMDEzLjMlMjAxMC43JTIwMjQlMjAyNCUyMDI0aDE2YzEzLjMlMjAwJTIwMjQtMTAuNyUyMDI0LTI0VjcyYzAtMTMuMy0xMC43LTI0LTI0LTI0SDg4em0wJTIwMTZoOHY4aC04di04em0wJTIwMjRoOHY0MGgtOFY4OHonJTJGJTNFJTNDJTJGc3ZnJTNFIiwic2l6ZXMiOiIxOTJ4MTkyIiwidHlwZSI6ImltYWdlL3N2Zyt4bWwifV19">
+    <meta name="theme-color" content="#21808d">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Office Timer">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect fill='%2321808d' width='192' height='192'/%3E%3Cpath fill='%23fcfcf9' d='M104 48c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24h16c13.3 0 24-10.7 24-24V72c0-13.3-10.7-24-24-24H88zm0 16h8v8h-8v-8zm0 24h8v40h-8V88z'/%3E%3C/svg%3E">
     <style>
         :root {
             --color-white: rgba(255, 255, 255, 1);
@@ -983,6 +987,85 @@
 
         // Initialize app on load
         init();
+
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register(getServiceWorkerCode())
+                    .then(registration => console.log('SW registered'))
+                    .catch(err => console.log('SW registration failed'));
+            });
+        }
+
+        // Generate service worker as blob URL
+        function getServiceWorkerCode() {
+            const swCode = `
+                const CACHE_NAME = 'office-tracker-v1';
+                const urlsToCache = ['/'];
+
+                self.addEventListener('install', event => {
+                    event.waitUntil(
+                        caches.open(CACHE_NAME)
+                            .then(cache => cache.addAll(urlsToCache))
+                    );
+                    self.skipWaiting();
+                });
+
+                self.addEventListener('fetch', event => {
+                    event.respondWith(
+                        caches.match(event.request)
+                            .then(response => response || fetch(event.request))
+                    );
+                });
+
+                self.addEventListener('activate', event => {
+                    event.waitUntil(
+                        caches.keys().then(cacheNames => {
+                            return Promise.all(
+                                cacheNames.filter(name => name !== CACHE_NAME)
+                                    .map(name => caches.delete(name))
+                            );
+                        })
+                    );
+                    return self.clients.claim();
+                });
+            `;
+            
+            const blob = new Blob([swCode], { type: 'application/javascript' });
+            return URL.createObjectURL(blob);
+        }
+
+        // Add PWA manifest dynamically
+        const manifestData = {
+            "name": "Office Time Tracker",
+            "short_name": "Office Timer",
+            "start_url": window.location.pathname,
+            "display": "standalone",
+            "background_color": "#fcfcf9",
+            "theme_color": "#21808d",
+            "orientation": "portrait",
+            "icons": [
+                {
+                    "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect fill='%2321808d' width='192' height='192'/%3E%3Cpath fill='%23fcfcf9' d='M104 48c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24h16c13.3 0 24-10.7 24-24V72c0-13.3-10.7-24-24-24H88zm0 16h8v8h-8v-8zm0 24h8v40h-8V88z'/%3E%3C/svg%3E",
+                    "sizes": "192x192",
+                    "type": "image/svg+xml",
+                    "purpose": "any maskable"
+                },
+                {
+                    "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect fill='%2321808d' width='512' height='512'/%3E%3Cpath fill='%23fcfcf9' d='M278 128c-35.5 0-64 28.5-64 64v128c0 35.5 28.5 64 64 64h43c35.5 0 64-28.5 64-64V192c0-35.5-28.5-64-64-64h-43zm0 43h21v21h-21v-21zm0 64h21v107h-21V235z'/%3E%3C/svg%3E",
+                    "sizes": "512x512",
+                    "type": "image/svg+xml",
+                    "purpose": "any maskable"
+                }
+            ]
+        };
+
+        const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
+        const manifestURL = URL.createObjectURL(manifestBlob);
+        const manifestLink = document.createElement('link');
+        manifestLink.rel = 'manifest';
+        manifestLink.href = manifestURL;
+        document.head.appendChild(manifestLink);
         </script>
 </body>
 </html>
