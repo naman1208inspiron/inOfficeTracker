@@ -2,7 +2,9 @@ const CACHE_NAME = 'office-tracker-v1';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/manifest.json'
+  '/manifest.json',
+  '/icon-192.png',
+  '/icon-512.png'
 ];
 
 // Install event - cache resources
@@ -10,7 +12,6 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Opened cache');
         return cache.addAll(urlsToCache);
       })
   );
@@ -20,15 +21,9 @@ self.addEventListener('install', event => {
 // Fetch event - serve from cache, fallback to network
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      }
-    )
+    caches.match(event.request).then(response => {
+      return response || fetch(event.request);
+    })
   );
 });
 
@@ -42,5 +37,11 @@ self.addEventListener('activate', event => {
       );
     })
   );
-  return self.clients.claim();
+  self.clients.claim();
+});
+
+// Handle notification clicks
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  event.waitUntil(clients.openWindow('/'));
 });
