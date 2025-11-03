@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Office Time Tracker</title>
+    <meta name="theme-color" content="#21808d">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Office Timer">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect fill='%2321808d' width='192' height='192'/%3E%3Cpath fill='%23fcfcf9' d='M104 48c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24h16c13.3 0 24-10.7 24-24V72c0-13.3-10.7-24-24-24H88zm0 16h8v8h-8v-8zm0 24h8v40h-8V88z'/%3E%3C/svg%3E">
+    <link rel="manifest" href="/manifest.json">
+
+    <style>
+        :root {
+            --color-white: rgba(255, 255, 255, 1);
+            --color-black: rgba(0, 0, 0, 1);
+            --color-cream-50: rgba(252, 252, 249, 1);
+            --color-cream-100: rgba(255, 255, 253, 1);
+            --color-gray-200: rgba(245, 245, 245, 1);
+            --color-gray-300: rgba(167, 169, 169, 1);
+            --color-gray-400: rgba(119, 124, 124, 1);
+            --color-slate-500: rgba(98, 108, 113, 1);
+            --color-brown-600: rgba(94, 82, 64, 1);
+            --color-charcoal-700: rgba(31, 33, 33, 1);
+            --color-charcoal-800: rgba(38, 40, 40, 1);
+            --color-slate-900: rgba(19, 52, 59, 1);
+            --color-teal-300: rgba(50, 184, 198, 1);
+            --color-teal-400: rgba(45, 166, 178, 1);
+            --color-teal-500: rgba(33, 128, 141, 1);
+            --color-teal-600: rgba(29, 116, 128, 1);
+            --color-teal-700: rgba(26, 104, 115, 1);
+            --color-brown-600-rgb: 94, 82, 64;
+            --color-teal-500-rgb: 33, 128, 141;
+            --color-slate-900-rgb: 19, 52, 59;
+            --color-background: var(--color-cream-50);
+            --color-surface: var(--color-cream-100);
+            --color-text: var(--color-slate-900);
+            --color-text-secondary: var(--color-slate-500);
+            --color-primary: var(--color-teal-500);
+            --color-primary-hover: var(--color-teal-600);
+            --color-primary-active: var(--color-teal-700);
+            --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
+            --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
+            --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+            --color-btn-primary-text: var(--color-cream-50);
+            --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+            --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-size-sm: 12px;
+            --font-size-base: 14px;
+            --font-size-lg: 16px;
+            --font-size-xl: 18px;
+            --font-size-2xl: 20px;
+            --font-size-3xl: 24px;
+            --font-size-4xl: 30px;
+            --font-weight-normal: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 550;
+            --font-weight-bold: 600;
+            --space-8: 8px;
+            --space-12: 12px;
+            --space-16: 16px;
+            --space-20: 20px;
+            --space-24: 24px;
+            --space-32: 32px;
+            --radius-base: 8px;
+            --radius-md: 10px;
+            --radius-lg: 12px;
+            --radius-full: 9999px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+            --duration-normal: 250ms;
+            --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-gray-400-rgb: 119, 124, 124;
+                --color-teal-300-rgb: 50, 184, 198;
+                --color-gray-300-rgb: 167, 169, 169;
+                --color-gray-200-rgb: 245, 245, 245;
+                --color-background: var(--color-charcoal-700);
+                --color-surface: var(--color-charcoal-800);
+                --color-text: var(--color-gray-200);
+                --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
+                --color-primary: var(--color-teal-300);
+                --color-primary-hover: var(--color-teal-400);
+                --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
+                --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
+                --color-border: rgba(var(--color-gray-400-rgb), 0.3);
+                --color-btn-primary-text: var(--color-slate-900);
+                --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-base);
+            background-color: var(--color-background);
+            color: var(--color-text);
+            -webkit-font-smoothing: antialiased;
+            padding-bottom: 70px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: var(--space-20);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: var(--space-32);
+            padding-top: var(--space-16);
+        }
+
+        .header h1 {
+            font-size: var(--font-size-3xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text);
+            margin-bottom: var(--space-8);
+        }
+
+        .header p {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+        }
+
+        .card {
+            background-color: var(--color-surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-card-border);
+            box-shadow: var(--shadow-sm);
+            padding: var(--space-24);
+            margin-bottom: var(--space-20);
+        }
+
+        .date-display {
+            text-align: center;
+            font-size: var(--font-size-lg);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-24);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .mode-selector {
+            display: flex;
+            gap: var(--space-12);
+            margin-bottom: var(--space-24);
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: var(--space-16);
+            border-radius: var(--radius-md);
+            border: 2px solid var(--color-border);
+            background: var(--color-surface);
+            color: var(--color-text);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--ease-standard);
+        }
+
+        .mode-btn:hover {
+            background: var(--color-secondary);
+            border-color: var(--color-primary);
+        }
+
+        .mode-btn.active {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+            color: var(--color-btn-primary-text);
+        }
+
+        .timer-section {
+            text-align: center;
+        }
+
+        .timer-display {
+            font-size: var(--font-size-4xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary);
+            margin: var(--space-24) 0;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-12) var(--space-32);
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--ease-standard);
+            border: none;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: var(--color-btn-primary-text);
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-hover);
+        }
+
+        .btn-secondary {
+            background: var(--color-secondary);
+            color: var(--color-text);
+            margin-top: var(--space-12);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-secondary-hover);
+        }
+
+        .wfh-message {
+            text-align: center;
+            padding: var(--space-32);
+        }
+
+        .wfh-message h3 {
+            font-size: var(--font-size-xl);
+            margin-bottom: var(--space-12);
+            color: var(--color-text);
+        }
+
+        .wfh-message p {
+            color: var(--color-text-secondary);
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--color-surface);
+            border-top: 1px solid var(--color-card-border);
+            display: flex;
+            justify-content: space-around;
+            padding: var(--space-12) 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: var(--space-8);
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            border: none;
+            background: none;
+            transition: color var(--duration-normal) var(--ease-standard);
+        }
+
+        .nav-item.active {
+            color: var(--color-primary);
+        }
+
+        .nav-icon {
+            font-size: 24px;
+        }
+
+        .nav-label {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .week-selector {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-24);
+        }
+
+        .week-nav-btn {
+            background: var(--color-secondary);
+            border: none;
+            padding: var(--space-8) var(--space-16);
+            border-radius: var(--radius-base);
+            color: var(--color-text);
+            cursor: pointer;
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .week-nav-btn:hover {
+            background: var(--color-secondary-hover);
+        }
+
+        .week-range {
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text);
+        }
+
+        .week-summary {
+            text-align: center;
+            padding: var(--space-24);
+            background: var(--color-secondary);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-24);
+        }
+
+        .week-summary h3 {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-8);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .week-summary .hours {
+            font-size: var(--font-size-4xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary);
+        }
+
+        .day-log {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-16);
+            border-bottom: 1px solid var(--color-card-border);
+        }
+
+        .day-log:last-child {
+            border-bottom: none;
+        }
+
+        .day-info {
+            flex: 1;
+        }
+
+        .day-name {
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text);
+            margin-bottom: 4px;
+        }
+
+        .day-date {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+
+        .day-hours {
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary);
+            font-size: var(--font-size-lg);
+        }
+
+        .wfh-badge {
+            background: var(--color-secondary);
+            padding: 4px var(--space-12);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: var(--space-32);
+            color: var(--color-text-secondary);
+        }
+
+        .mode-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-12);
+            margin-bottom: var(--space-24);
+        }
+
+        .mode-selector .mode-btn:last-child {
+            grid-column: 1 / -1;
+        }
+
+        .insight-item {
+            padding: var(--space-12);
+            margin-bottom: var(--space-12);
+            background: var(--color-secondary);
+            border-radius: var(--radius-base);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .insight-label {
+            color: var(--color-text);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .insight-value {
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary);
+        }
+
+        .insight-value.warning {
+            color: var(--color-orange-500);
+        }
+
+        .insight-value.success {
+            color: var(--color-teal-500);
+        }
+
+        .holiday-badge {
+            background: var(--color-orange-400);
+            color: var(--color-white);
+            padding: 4px var(--space-12);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Today Tab -->
+    <div id="today-tab" class="tab-content active">
+        <div class="container">
+            <div class="header">
+                <h1>Office Time Tracker</h1>
+                <p class="date-display" id="current-date"></p>
+            </div>
+
+            <div id="mode-selection" class="card">
+                <h3 style="margin-bottom: var(--space-16); font-size: var(--font-size-lg);">Where are you working today?</h3>
+                <div class="mode-selector">
+                    <button class="mode-btn" id="wfh-btn">🏠 Work From Home</button>
+                    <button class="mode-btn" id="office-btn">🏢 Office</button>
+                    <button class="mode-btn" id="holiday-btn">🏖️ Holiday</button>
+                </div>
+            </div>
+
+            <div id="wfh-screen" class="card hidden">
+                <div class="wfh-message">
+                    <h3>✅ Marked as WFH</h3>
+                    <p>This day has been logged as Work From Home</p>
+                    <button class="btn btn-secondary" id="change-mode-btn">Change to Office</button>
+                    <button class="btn btn-secondary" id="back-from-wfh-btn">← Back to Options</button>
+                </div>
+            </div>
+
+            <div id="office-screen" class="card hidden">
+                <div class="timer-section">
+                    <h3 style="margin-bottom: var(--space-16); font-size: var(--font-size-lg);">Office Time</h3>
+                    <div class="timer-display" id="timer-display">00:00:00</div>
+                    
+                    <div id="start-prompt">
+                        <p style="margin-bottom: var(--space-16); color: var(--color-text-secondary);">Ready to start tracking your office hours?</p>
+                        <button class="btn btn-primary" id="start-timer-btn">▶️ Start Timer</button>
+                        <button class="btn btn-secondary" id="back-from-office-btn">← Back to Options</button>
+                    </div>
+
+                    <div id="timer-controls" class="hidden">
+                        <button class="btn btn-primary" id="pause-timer-btn">⏸️ Pause Timer</button>
+                        <button class="btn btn-secondary" id="stop-timer-btn">⏹️ Stop & Log Hours</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="holiday-screen" class="card hidden">
+                <div class="wfh-message">
+                    <h3>🏖️ Holiday Logged</h3>
+                    <p>8 hours automatically logged as office time</p>
+                    <button class="btn btn-secondary" id="uncheck-holiday-btn">Uncheck Holiday</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics Tab -->
+    <div id="analytics-tab" class="tab-content">
+        <div class="container">
+            <div class="header">
+                <h1>Analytics</h1>
+                <p>Track your office hours</p>
+            </div>
+
+            <div class="week-selector">
+                <button class="week-nav-btn" id="prev-week">← Previous</button>
+                <span class="week-range" id="week-range"></span>
+                <button class="week-nav-btn" id="next-week">Next →</button>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-bottom: var(--space-16); font-size: var(--font-size-lg);">Weekly Compliance</h3>
+                <div id="weekly-insights"></div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-bottom: var(--space-16); font-size: var(--font-size-lg);">Daily Breakdown</h3>
+                <div id="daily-logs"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" id="nav-today">
+            <span class="nav-icon">📅</span>
+            <span class="nav-label">Today</span>
+        </button>
+        <button class="nav-item" id="nav-analytics">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Analytics</span>
+        </button>
+    </nav>
+
+    <script>
+        // State management
+        let timerInterval = null;
+        let currentSeconds = 0;
+        let isPaused = false;
+        let currentWeekOffset = 0;
+
+        // Data storage structure
+        let appData = {
+            logs: {} // Format: { 'YYYY-MM-DD': { mode: 'wfh'/'office'/'holiday', seconds: 0, holidayWork: 0 } }
+        };
+
+        // Initialize app
+        function init() {
+            loadData();
+            updateCurrentDate();
+            checkTodayLog();
+            setupEventListeners();
+        }
+
+        // Load data from localStorage (permanent storage)
+        function loadData() {
+            try {
+                const stored = localStorage.getItem('officeTimeTrackerData');
+                if (stored) {
+                    appData = JSON.parse(stored);
+                }
+            } catch (e) {
+                console.error('Error loading data:', e);
+            }
+        }
+
+        // Save data to localStorage (permanent storage)
+        function saveData() {
+            try {
+                localStorage.setItem('officeTimeTrackerData', JSON.stringify(appData));
+            } catch (e) {
+                console.error('Error saving data:', e);
+            }
+        }
+
+        // Get today's date in YYYY-MM-DD format
+        function getTodayKey() {
+            const today = new Date();
+            return today.toISOString().split('T')[0];
+        }
+
+        // Format date for display
+        function formatDate(date) {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('en-IN', options);
+        }
+
+        // Update current date display
+        function updateCurrentDate() {
+            const today = new Date();
+            document.getElementById('current-date').textContent = formatDate(today);
+        }
+
+        // Check if today already has a log
+        function checkTodayLog() {
+            const todayKey = getTodayKey();
+            const todayLog = appData.logs[todayKey];
+
+            if (todayLog) {
+                if (todayLog.mode === 'wfh') {
+                    showWFHScreen();
+                } else if (todayLog.mode === 'office') {
+                    showOfficeScreen();
+                    currentSeconds = todayLog.seconds || 0;
+                    updateTimerDisplay();
+                } else if (todayLog.mode === 'holiday') {
+                    showHolidayScreen();
+                }
+            } else {
+                showModeSelection();
+            }
+        }
+
+        // Show mode selection
+        function showModeSelection() {
+            document.getElementById('mode-selection').classList.remove('hidden');
+            document.getElementById('wfh-screen').classList.add('hidden');
+            document.getElementById('office-screen').classList.add('hidden');
+            document.getElementById('holiday-screen').classList.add('hidden');
+        }
+
+        // Show WFH screen
+        function showWFHScreen() {
+            document.getElementById('mode-selection').classList.add('hidden');
+            document.getElementById('wfh-screen').classList.remove('hidden');
+            document.getElementById('office-screen').classList.add('hidden');
+            document.getElementById('holiday-screen').classList.add('hidden');
+            
+            const todayKey = getTodayKey();
+            appData.logs[todayKey] = { mode: 'wfh', seconds: 0 };
+            saveData();
+        }
+
+        // Show office screen
+        function showOfficeScreen() {
+            document.getElementById('mode-selection').classList.add('hidden');
+            document.getElementById('wfh-screen').classList.add('hidden');
+            document.getElementById('office-screen').classList.remove('hidden');
+            document.getElementById('holiday-screen').classList.add('hidden');
+            
+            const todayKey = getTodayKey();
+            if (!appData.logs[todayKey]) {
+                appData.logs[todayKey] = { mode: 'office', seconds: 0 };
+                saveData();
+            }
+        }
+
+        // Show holiday screen
+        function showHolidayScreen() {
+            document.getElementById('mode-selection').classList.add('hidden');
+            document.getElementById('wfh-screen').classList.add('hidden');
+            document.getElementById('office-screen').classList.add('hidden');
+            document.getElementById('holiday-screen').classList.remove('hidden');
+            
+            const todayKey = getTodayKey();
+            appData.logs[todayKey] = { mode: 'holiday', seconds: 8 * 3600 }; // 8 hours counted as office
+            saveData();
+        }
+
+        // Format seconds to HH:MM:SS
+        function formatTime(seconds) {
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            const s = seconds % 60;
+            return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        // Format seconds to Xh Ym
+        function formatHoursMinutes(seconds) {
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            return `${h}h ${m}m`;
+        }
+
+        // Update timer display
+        function updateTimerDisplay() {
+            document.getElementById('timer-display').textContent = formatTime(currentSeconds);
+        }
+
+        // Start timer
+        function startTimer() {
+            document.getElementById('start-prompt').classList.add('hidden');
+            document.getElementById('timer-controls').classList.remove('hidden');
+            
+            // Load existing time for today if available
+            const todayKey = getTodayKey();
+            if (appData.logs[todayKey] && appData.logs[todayKey].seconds) {
+                currentSeconds = appData.logs[todayKey].seconds;
+                updateTimerDisplay();
+            }
+            
+            isPaused = false;
+            timerInterval = setInterval(() => {
+                if (!isPaused) {
+                    currentSeconds++;
+                    updateTimerDisplay();
+                    
+                    appData.logs[todayKey].seconds = currentSeconds;
+                    saveData();
+                }
+            }, 1000);
+        }
+
+        // Pause timer
+        function pauseTimer() {
+            isPaused = !isPaused;
+            const pauseBtn = document.getElementById('pause-timer-btn');
+            pauseBtn.textContent = isPaused ? '▶️ Resume Timer' : '⏸️ Pause Timer';
+        }
+
+        // Stop timer and log
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            
+            const todayKey = getTodayKey();
+            appData.logs[todayKey].seconds = currentSeconds;
+            saveData();
+            
+            alert(`Office hours logged: ${formatHoursMinutes(currentSeconds)}`);
+            
+            // Reset pause state and button text
+            isPaused = false;
+            document.getElementById('pause-timer-btn').textContent = '⏸️ Pause Timer';
+            
+            // Show start prompt again to allow resuming
+            document.getElementById('start-prompt').classList.remove('hidden');
+            document.getElementById('timer-controls').classList.add('hidden');
+        }
+
+        // Get week date range
+        function getWeekRange(offset = 0) {
+            const today = new Date();
+            const currentDay = today.getDay();
+            const monday = new Date(today);
+            monday.setDate(today.getDate() - currentDay + (currentDay === 0 ? -6 : 1) + (offset * 7));
+            
+            const sunday = new Date(monday);
+            sunday.setDate(monday.getDate() + 6);
+            
+            return { monday, sunday };
+        }
+
+        // Get dates in week
+        function getDatesInWeek(offset = 0) {
+            const { monday } = getWeekRange(offset);
+            const dates = [];
+            
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(monday);
+                date.setDate(monday.getDate() + i);
+                dates.push(date);
+            }
+            
+            return dates;
+        }
+
+        // Update analytics view
+        function updateAnalytics() {
+            const { monday, sunday } = getWeekRange(currentWeekOffset);
+            const dates = getDatesInWeek(currentWeekOffset);
+            
+            // Update week range
+            const weekRangeText = `${monday.getDate()} ${monday.toLocaleString('en-IN', { month: 'short' })} - ${sunday.getDate()} ${sunday.toLocaleString('en-IN', { month: 'short' })} ${sunday.getFullYear()}`;
+            document.getElementById('week-range').textContent = weekRangeText;
+            
+            // Calculate total hours
+            let totalSeconds = 0;
+            let officeDays8Plus = 0;
+            let wfhDays = 0;
+            let holidayDays = 0;
+            
+            dates.forEach(date => {
+                const key = date.toISOString().split('T')[0];
+                const log = appData.logs[key];
+                if (log) {
+                    if (log.mode === 'office' || log.mode === 'holiday') {
+                        totalSeconds += log.seconds || 0;
+                        if ((log.seconds || 0) >= 8 * 3600) { // 8 hours
+                            officeDays8Plus++;
+                        }
+                        if (log.mode === 'holiday') {
+                            holidayDays++;
+                        }
+                    } else if (log.mode === 'wfh') {
+                        wfhDays++;
+                    }
+                }
+            });
+            
+            // Update weekly insights
+            updateWeeklyInsights(officeDays8Plus, wfhDays, holidayDays, dates);
+            
+            // Update daily logs
+            const dailyLogsContainer = document.getElementById('daily-logs');
+            dailyLogsContainer.innerHTML = '';
+            
+            dates.forEach(date => {
+                const key = date.toISOString().split('T')[0];
+                const log = appData.logs[key];
+                
+                // Skip Saturday (6) and Sunday (0)
+                const dayOfWeek = date.getDay();
+                if (dayOfWeek === 0 || dayOfWeek === 6) {
+                    return;
+                }
+                
+                const dayLog = document.createElement('div');
+                dayLog.className = 'day-log';
+                
+                const dayInfo = document.createElement('div');
+                dayInfo.className = 'day-info';
+                
+                const dayName = document.createElement('div');
+                dayName.className = 'day-name';
+                dayName.textContent = date.toLocaleDateString('en-IN', { weekday: 'long' });
+                
+                const dayDate = document.createElement('div');
+                dayDate.className = 'day-date';
+                dayDate.textContent = date.toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' });
+                
+                dayInfo.appendChild(dayName);
+                dayInfo.appendChild(dayDate);
+                
+                const dayHours = document.createElement('div');
+                
+                if (!log) {
+                    dayHours.className = 'day-hours';
+                    dayHours.textContent = '-';
+                    dayHours.style.color = 'var(--color-text-secondary)';
+                } else if (log.mode === 'wfh') {
+                    dayHours.className = 'wfh-badge';
+                    dayHours.textContent = 'WFH';
+                } else if (log.mode === 'holiday') {
+                    dayHours.className = 'day-hours';
+                    dayHours.innerHTML = formatHoursMinutes(log.seconds || 0) + ' <span class="holiday-badge" style="margin-left: 8px; font-size: 10px;">🏖️</span>';
+                } else {
+                    dayHours.className = 'day-hours';
+                    dayHours.textContent = formatHoursMinutes(log.seconds || 0);
+                }
+                
+                dayLog.appendChild(dayInfo);
+                dayLog.appendChild(dayHours);
+                dailyLogsContainer.appendChild(dayLog);
+            });
+        }
+
+        // Update weekly insights
+        function updateWeeklyInsights(officeDays8Plus, wfhDays, holidayDays, dates) {
+                const insightsContainer = document.getElementById('weekly-insights');
+                insightsContainer.innerHTML = '';
+                
+                // Calculate remaining days needed
+                const requiredOfficeDays = 3;
+                const maxWfhDays = 2;
+                const remainingOfficeDays = Math.max(0, requiredOfficeDays - officeDays8Plus);
+                
+                // Current day of week (Monday = 0, Sunday = 6)
+                const today = new Date();
+                const todayInWeek = dates.findIndex(date => date.toDateString() === today.toDateString());
+                const remainingDaysInWeek = Math.max(0, 6 - todayInWeek); // Excluding Sunday
+                
+                // Office compliance
+                const officeInsight = document.createElement('div');
+                officeInsight.className = 'insight-item';
+                officeInsight.innerHTML = `
+                    <span class="insight-label">Office Days (8+ hrs completed)</span>
+                    <span class="insight-value ${officeDays8Plus >= requiredOfficeDays ? 'success' : 'warning'}">${officeDays8Plus}/${requiredOfficeDays}</span>
+                `;
+                insightsContainer.appendChild(officeInsight);
+                
+                // WFH compliance
+                const wfhInsight = document.createElement('div');
+                wfhInsight.className = 'insight-item';
+                wfhInsight.innerHTML = `
+                    <span class="insight-label">WFH Days used</span>
+                    <span class="insight-value ${wfhDays <= maxWfhDays ? 'success' : 'warning'}">${wfhDays}/${maxWfhDays}</span>
+                `;
+                insightsContainer.appendChild(wfhInsight);
+                
+                // Holiday days
+                if (holidayDays > 0) {
+                    const holidayInsight = document.createElement('div');
+                    holidayInsight.className = 'insight-item';
+                    holidayInsight.innerHTML = `
+                        <span class="insight-label">Holiday Days</span>
+                        <span class="insight-value">${holidayDays}</span>
+                    `;
+                    insightsContainer.appendChild(holidayInsight);
+                }
+                
+                // Recommendation
+                const recommendationInsight = document.createElement('div');
+                recommendationInsight.className = 'insight-item';
+                let recommendation = '';
+                let recommendationClass = 'success';
+                
+                if (remainingOfficeDays > 0) {
+                    if (remainingOfficeDays > remainingDaysInWeek) {
+                        recommendation = `Need ${remainingOfficeDays} more days`;
+                        recommendationClass = 'warning';
+                    } else {
+                        recommendation = `${remainingOfficeDays} more WFO needed`;
+                        recommendationClass = 'warning';
+                    }
+                } else {
+                    recommendation = '✅ Completed!';
+                    recommendationClass = 'success';
+                }
+                
+                recommendationInsight.innerHTML = `
+                    <span class="insight-label">Status</span>
+                    <span class="insight-value ${recommendationClass}">${recommendation}</span>
+                `;
+                insightsContainer.appendChild(recommendationInsight);
+            }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Mode selection
+            document.getElementById('wfh-btn').addEventListener('click', showWFHScreen);
+            document.getElementById('office-btn').addEventListener('click', showOfficeScreen);
+            document.getElementById('holiday-btn').addEventListener('click', showHolidayScreen);
+            document.getElementById('change-mode-btn').addEventListener('click', () => {
+                const todayKey = getTodayKey();
+                delete appData.logs[todayKey];
+                saveData();
+                currentSeconds = 0;
+                showOfficeScreen();
+            });
+
+            // Holiday screen
+            document.getElementById('uncheck-holiday-btn').addEventListener('click', () => {
+                const todayKey = getTodayKey();
+                delete appData.logs[todayKey];
+                saveData();
+                currentSeconds = 0;
+                showModeSelection();
+            });
+
+            // Back buttons
+            document.getElementById('back-from-office-btn').addEventListener('click', () => {
+                const todayKey = getTodayKey();
+                delete appData.logs[todayKey];
+                saveData();
+                currentSeconds = 0;
+                showModeSelection();
+            });
+
+            document.getElementById('back-from-wfh-btn').addEventListener('click', () => {
+                const todayKey = getTodayKey();
+                delete appData.logs[todayKey];
+                saveData();
+                showModeSelection();
+            });
+
+            // Timer controls
+            document.getElementById('start-timer-btn').addEventListener('click', startTimer);
+            document.getElementById('pause-timer-btn').addEventListener('click', pauseTimer);
+            document.getElementById('stop-timer-btn').addEventListener('click', stopTimer);
+
+            // Bottom navigation
+            document.getElementById('nav-today').addEventListener('click', () => {
+                document.getElementById('today-tab').classList.add('active');
+                document.getElementById('analytics-tab').classList.remove('active');
+                document.getElementById('nav-today').classList.add('active');
+                document.getElementById('nav-analytics').classList.remove('active');
+            });
+
+            document.getElementById('nav-analytics').addEventListener('click', () => {
+                document.getElementById('today-tab').classList.remove('active');
+                document.getElementById('analytics-tab').classList.add('active');
+                document.getElementById('nav-today').classList.remove('active');
+                document.getElementById('nav-analytics').classList.add('active');
+                updateAnalytics();
+            });
+
+            // Week navigation
+            document.getElementById('prev-week').addEventListener('click', () => {
+                currentWeekOffset--;
+                updateAnalytics();
+            });
+
+            document.getElementById('next-week').addEventListener('click', () => {
+                currentWeekOffset++;
+                updateAnalytics();
+            });
+        }
+
+        // Initialize app on load
+        init();
+
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register(getServiceWorkerCode())
+                    .then(registration => console.log('SW registered'))
+                    .catch(err => console.log('SW registration failed'));
+            });
+        }
+
+        // Generate service worker as blob URL
+        function getServiceWorkerCode() {
+            const swCode = `
+                const CACHE_NAME = 'office-tracker-v1';
+                const urlsToCache = ['/'];
+
+                self.addEventListener('install', event => {
+                    event.waitUntil(
+                        caches.open(CACHE_NAME)
+                            .then(cache => cache.addAll(urlsToCache))
+                    );
+                    self.skipWaiting();
+                });
+
+                self.addEventListener('fetch', event => {
+                    event.respondWith(
+                        caches.match(event.request)
+                            .then(response => response || fetch(event.request))
+                    );
+                });
+
+                self.addEventListener('activate', event => {
+                    event.waitUntil(
+                        caches.keys().then(cacheNames => {
+                            return Promise.all(
+                                cacheNames.filter(name => name !== CACHE_NAME)
+                                    .map(name => caches.delete(name))
+                            );
+                        })
+                    );
+                    return self.clients.claim();
+                });
+            `;
+            
+            const blob = new Blob([swCode], { type: 'application/javascript' });
+            return URL.createObjectURL(blob);
+        }
+
+        // Add PWA manifest dynamically
+        const manifestData = {
+            "name": "Office Time Tracker",
+            "short_name": "Office Timer",
+            "start_url": window.location.pathname,
+            "display": "standalone",
+            "background_color": "#fcfcf9",
+            "theme_color": "#21808d",
+            "orientation": "portrait",
+            "icons": [
+                {
+                    "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect fill='%2321808d' width='192' height='192'/%3E%3Cpath fill='%23fcfcf9' d='M104 48c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24h16c13.3 0 24-10.7 24-24V72c0-13.3-10.7-24-24-24H88zm0 16h8v8h-8v-8zm0 24h8v40h-8V88z'/%3E%3C/svg%3E",
+                    "sizes": "192x192",
+                    "type": "image/svg+xml",
+                    "purpose": "any maskable"
+                },
+                {
+                    "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect fill='%2321808d' width='512' height='512'/%3E%3Cpath fill='%23fcfcf9' d='M278 128c-35.5 0-64 28.5-64 64v128c0 35.5 28.5 64 64 64h43c35.5 0 64-28.5 64-64V192c0-35.5-28.5-64-64-64h-43zm0 43h21v21h-21v-21zm0 64h21v107h-21V235z'/%3E%3C/svg%3E",
+                    "sizes": "512x512",
+                    "type": "image/svg+xml",
+                    "purpose": "any maskable"
+                }
+            ]
+        };
+
+        const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
+        const manifestURL = URL.createObjectURL(manifestBlob);
+        const manifestLink = document.createElement('link');
+        manifestLink.rel = 'manifest';
+        manifestLink.href = manifestURL;
+        document.head.appendChild(manifestLink);
+
+        if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js');
+    });
+}
+        </script>
+</body>
+</html>
