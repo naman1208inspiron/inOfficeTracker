@@ -146,7 +146,6 @@
         .date-display {
             text-align: center;
             font-size: 24px !important;
-            /* Using !important to override and fixed size */
             color: var(--color-text-secondary);
             margin-bottom: var(--space-24);
             font-weight: var(--font-weight-medium);
@@ -192,6 +191,27 @@
             color: var(--color-primary);
             margin: var(--space-24) 0;
             font-variant-numeric: tabular-nums;
+        }
+
+        .time-info {
+            margin: var(--space-16) 0;
+            padding: var(--space-16);
+            background: var(--color-secondary);
+            border-radius: var(--radius-base);
+        }
+
+        .time-info p {
+            margin-bottom: var(--space-8);
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+        }
+
+        .time-info p:last-child {
+            margin-bottom: 0;
+        }
+
+        .time-info strong {
+            color: var(--color-text);
         }
 
         .btn {
@@ -317,34 +337,18 @@
             color: var(--color-text);
         }
 
-        .week-summary {
-            text-align: center;
-            padding: var(--space-24);
-            background: var(--color-secondary);
-            border-radius: var(--radius-md);
-            margin-bottom: var(--space-24);
-        }
-
-        .week-summary h3 {
-            font-size: var(--font-size-sm);
-            color: var(--color-text-secondary);
-            margin-bottom: var(--space-8);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .week-summary .hours {
-            font-size: var(--font-size-4xl);
-            font-weight: var(--font-weight-bold);
-            color: var(--color-primary);
-        }
-
         .day-log {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: var(--space-16);
             border-bottom: 1px solid var(--color-card-border);
+            cursor: pointer;
+            transition: background var(--duration-normal);
+        }
+
+        .day-log:hover {
+            background: var(--color-secondary);
         }
 
         .day-log:last-child {
@@ -381,23 +385,6 @@
             font-weight: var(--font-weight-medium);
         }
 
-        .empty-state {
-            text-align: center;
-            padding: var(--space-32);
-            color: var(--color-text-secondary);
-        }
-
-        .mode-selector {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-12);
-            margin-bottom: var(--space-24);
-        }
-
-        .mode-selector .mode-btn:last-child {
-            grid-column: 1 / -1;
-        }
-
         .insight-item {
             padding: var(--space-12);
             margin-bottom: var(--space-12);
@@ -419,16 +406,16 @@
         }
 
         .insight-value.warning {
-            color: var(--color-orange-500);
+            color: #ff6b6b;
         }
 
         .insight-value.success {
-            color: var(--color-teal-500);
+            color: var(--color-primary);
         }
 
         .holiday-badge {
-            background: var(--color-orange-400);
-            color: var(--color-white);
+            background: #ff6b6b;
+            color: white;
             padding: 4px var(--space-12);
             border-radius: var(--radius-full);
             font-size: var(--font-size-sm);
@@ -437,6 +424,116 @@
 
         .hidden {
             display: none !important;
+        }
+
+        .mode-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-12);
+            margin-bottom: var(--space-24);
+        }
+
+        .mode-selector .mode-btn:last-child {
+            grid-column: 1 / -1;
+        }
+
+        .warning-msg {
+            background: #fff3cd;
+            color: #856404;
+            padding: var(--space-12);
+            border-radius: var(--radius-base);
+            margin: var(--space-16) 0;
+            text-align: center;
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: var(--space-20);
+        }
+
+        .modal {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            padding: var(--space-24);
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal h3 {
+            margin-bottom: var(--space-20);
+            color: var(--color-text);
+        }
+
+        .form-group {
+            margin-bottom: var(--space-16);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: var(--space-8);
+            font-weight: var(--font-weight-medium);
+            font-size: var(--font-size-sm);
+            color: var(--color-text);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: var(--space-12);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            background: var(--color-background);
+            color: var(--color-text);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: var(--space-12);
+            margin-top: var(--space-24);
+        }
+
+        .fun-message {
+            text-align: center;
+            padding: var(--space-32);
+            font-size: var(--font-size-lg);
+            line-height: 1.6;
+        }
+
+        .fun-message h3 {
+            font-size: var(--font-size-2xl);
+            margin-bottom: var(--space-16);
+        }
+
+        .edit-times-section {
+            margin-top: var(--space-16);
+            padding: var(--space-16);
+            background: var(--color-background);
+            border-radius: var(--radius-base);
+        }
+
+        .edit-times-section h4 {
+            font-size: var(--font-size-base);
+            margin-bottom: var(--space-12);
+            color: var(--color-text);
         }
     </style>
 </head>
@@ -457,20 +554,13 @@
                     <button class="mode-btn" id="wfh-btn">🏠 Work From Home</button>
                     <button class="mode-btn" id="office-btn">💼 Office</button>
                     <button class="mode-btn" id="holiday-btn">🏖️ Holiday - hurrah!!</button>
-
                 </div>
-                <!-- ADD NOTIFICATION BUTTON HERE -->
-                <button id="enable-notifications" class="btn btn--secondary btn--full-width"
-                    style="margin-top: var(--space-16); display: none;">
-                    🔔 Enable Notifications
-                </button>
             </div>
 
             <div id="wfh-screen" class="card hidden">
                 <div class="wfh-message">
                     <h3>✅ Marked as WFH</h3>
                     <p>This day has been logged as Work From Home</p>
-                    <button class="btn btn-secondary" id="change-mode-btn">Change to Office</button>
                     <button class="btn btn-secondary" id="back-from-wfh-btn">← Back to Options</button>
                 </div>
             </div>
@@ -478,18 +568,44 @@
             <div id="office-screen" class="card hidden">
                 <div class="timer-section">
                     <h3 style="margin-bottom: var(--space-16); font-size: var(--font-size-lg);">Office Time</h3>
-                    <div class="timer-display" id="timer-display">00:00:00</div>
 
-                    <div id="start-prompt">
-                        <p style="margin-bottom: var(--space-16); color: var(--color-text-secondary);">Ready to start
-                            tracking your office hours?</p>
-                        <button class="btn btn-primary" id="start-timer-btn">▶️ Start Timer</button>
+                    <!-- Before Login -->
+                    <div id="before-login">
+                        <p style="margin-bottom: var(--space-16); color: var(--color-text-secondary);">Record your login
+                            time to start tracking</p>
+                        <button class="btn btn-primary" id="record-login-btn">🕐 Record Login Time</button>
                         <button class="btn btn-secondary" id="back-from-office-btn">← Back to Options</button>
                     </div>
 
-                    <div id="timer-controls" class="hidden">
-                        <button class="btn btn-primary" id="pause-timer-btn">⏸️ Pause Timer</button>
-                        <button class="btn btn-secondary" id="stop-timer-btn">⏹️ Stop & Log Hours</button>
+                    <!-- After Login -->
+                    <div id="after-login" class="hidden">
+                        <div class="time-info">
+                            <p><strong>Login Time:</strong> <span id="login-time-display"></span></p>
+                            <p><strong>Logout Time:</strong> <span id="logout-time-display">Not recorded</span></p>
+                        </div>
+
+                        <div class="timer-display" id="elapsed-time-display">00:00:00</div>
+
+                        <div id="warning-container"></div>
+
+                        <button class="btn btn-primary" id="record-logout-btn">🕐 Record Logout Time</button>
+
+                        <!-- Edit Times Section -->
+                        <div class="edit-times-section">
+                            <h4>🕰️ Edit Times (if you forgot to record)</h4>
+                            <div class="form-group">
+                                <label class="form-label">Login Time (Today only)</label>
+                                <input type="time" id="edit-login-input" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Logout Time (Today only)</label>
+                                <input type="time" id="edit-logout-input" class="form-input">
+                            </div>
+
+                            <button class="btn btn-primary" id="save-custom-times-btn">💾 Save Custom Times</button>
+                        </div>
+
+                        <button class="btn btn-secondary" id="reset-day-btn">Reset Day</button>
                     </div>
                 </div>
             </div>
@@ -518,14 +634,58 @@
                 <button class="week-nav-btn" id="next-week">Next →</button>
             </div>
 
-            <div class="card">
-                <h3 style="margin-bottom: var(--space-16); font-size: var(--font-size-lg);">Weekly Compliance</h3>
-                <div id="weekly-insights"></div>
+
+            <!-- Future Week Message -->
+            <div id="future-week-message" class="card hidden">
+                <div class="fun-message" id="fun-content"></div>
             </div>
 
-            <div class="card">
-                <h3 style="margin-bottom: var(--space-16); font-size: var(--font-size-lg);">Daily Breakdown</h3>
-                <div id="daily-logs"></div>
+            <!-- Regular Analytics -->
+            <div id="analytics-content">
+                <div class="card">
+                    <h3 style="margin-bottom: var(--space-16); font-size: var(--font-size-lg);">Weekly Compliance</h3>
+                    <div id="weekly-insights"></div>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin-bottom: var(--space-16); font-size: var(--font-size-lg);">Daily Breakdown</h3>
+                    <div id="daily-logs"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Day Modal -->
+    <div id="edit-day-modal" class="modal-overlay hidden">
+        <div class="modal">
+            <h3>Edit Day</h3>
+            <div id="edit-day-date"></div>
+
+            <div class="form-group">
+                <label class="form-label">Mode</label>
+                <select id="edit-mode-select" class="form-input">
+                    <option value="office">Office</option>
+                    <option value="wfh">Work From Home</option>
+                    <option value="holiday">Holiday</option>
+                </select>
+            </div>
+
+            <div id="edit-office-times">
+                <div class="form-group">
+                    <label class="form-label">Login Time</label>
+                    <input type="datetime-local" id="edit-day-login-input" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Logout Time</label>
+                    <input type="datetime-local" id="edit-day-logout-input" class="form-input">
+                </div>
+            </div>
+
+            <div class="modal-buttons">
+                <button class="btn btn-primary" id="save-day-edit-btn" style="flex: 1;">💾 Save</button>
+                <button class="btn btn-secondary" id="delete-day-btn" style="flex: 1; margin-top: 0;">🗑️
+                    Delete</button>
+                <button class="btn btn-secondary" id="cancel-edit-btn" style="flex: 1; margin-top: 0;">Cancel</button>
             </div>
         </div>
     </div>
@@ -544,14 +704,58 @@
 
     <script>
         // State management
-        let timerInterval = null;
-        let currentSeconds = 0;
-        let isPaused = false;
+        let updateInterval = null;
         let currentWeekOffset = 0;
+        let editingDayKey = null;
+
+        // Fun messages for future weeks
+        const funMessages = [
+            // Office Jokes
+            { type: 'joke', text: '🤔 Boss: "Why are you late?"\nMe: "I was logging yesterday\'s hours!"' },
+            { type: 'joke', text: '😄 My favorite exercise at work? Running out of coffee!' },
+            { type: 'joke', text: '💼 "I love deadlines. I love the whooshing noise they make as they go by." - Douglas Adams' },
+            { type: 'joke', text: '☕ Coffee: Because adulting is hard and Mondays are harder!' },
+            { type: 'joke', text: '😂 I told my boss 3 people at work were slacking. He said, "Who?" I said, "Me, Myself, and I."' },
+            { type: 'joke', text: '🏢 Why don\'t scientists trust atoms at work? Because they make up everything!' },
+            { type: 'joke', text: '⏰ I\'m not saying I\'m Wonder Woman, I\'m just saying no one has ever seen me and Wonder Woman in the office at the same time.' },
+
+            // Dad Jokes
+            { type: 'joke', text: '😄 Why did the scarecrow get promoted? He was outstanding in his field!' },
+            { type: 'joke', text: '🤓 What do you call a bear with no teeth? A gummy bear!' },
+            { type: 'joke', text: '😂 I used to hate facial hair, but then it grew on me.' },
+            { type: 'joke', text: '🎯 Why don\'t eggs tell jokes? They\'d crack each other up!' },
+            { type: 'joke', text: '📱 What did the janitor say when he jumped out of the closet? SUPPLIES!' },
+            { type: 'joke', text: '⌨️ Why did the computer go to therapy? It had too many tabs open!' },
+
+            // Future Week Specific
+            { type: 'joke', text: '🤔 Trying to predict the future? Even weather apps can\'t do that!' },
+            { type: 'joke', text: '😄 Time machine under maintenance. Please work on present week!' },
+            { type: 'joke', text: '⏰ Error 404: Future data not found. Try working today instead!' },
+            { type: 'joke', text: '🚀 Future weeks are like flying cars - we all want them, but they don\'t exist yet!' },
+            { type: 'joke', text: '🔮 Crystal ball says: Focus on THIS week first!' },
+            { type: 'joke', text: '📅 Slow down there, Marty McFly! Let\'s finish this week first!' },
+
+            // Motivational Quotes
+            { type: 'quote', text: '💡 "The future depends on what you do today." - Mahatma Gandhi' },
+            { type: 'quote', text: '🌟 "Focus on being productive instead of busy." - Tim Ferriss' },
+            { type: 'quote', text: '✨ "The best time to plant a tree was 20 years ago. The second best time is now."' },
+            { type: 'quote', text: '💪 "Success is the sum of small efforts repeated day in and day out." - Robert Collier' },
+            { type: 'quote', text: '🎯 "The only way to do great work is to love what you do." - Steve Jobs' },
+            { type: 'quote', text: '🚀 "Don\'t watch the clock; do what it does. Keep going." - Sam Levenson' },
+            { type: 'quote', text: '⭐ "Start where you are. Use what you have. Do what you can." - Arthur Ashe' },
+            { type: 'quote', text: '💫 "Your limitation—it\'s only your imagination."' },
+
+            // Pahelis
+            { type: 'paheli', text: '🧩 Paheli: Aisa kon sa time hai jo kabhi nahi aata?\n\nAnswer: Next week! 😉' },
+            { type: 'paheli', text: '🤔 Paheli: Woh kaun si cheez hai jo sirf dekhne ke liye hoti hai, use nahi kar sakte?\n\nAnswer: Future week ka data! 😄' },
+            { type: 'paheli', text: '🎯 Paheli: Kal aayega par kabhi nahi aata, woh kya hai?\n\nAnswer: Kal! Focus on aaj! 😊' },
+            { type: 'paheli', text: '🧠 Paheli: Office mein sabse zyada kya chalta hai?\n\nAnswer: AC! 😂' },
+            { type: 'paheli', text: '🤷 Paheli: Woh kaunsa din hai jab sab log busy dikhte hain par kaam nahi hota?\n\nAnswer: Monday! 😴' }
+        ];
 
         // Data storage structure
         let appData = {
-            logs: {} // Format: { 'YYYY-MM-DD': { mode: 'wfh'/'office'/'holiday', seconds: 0, holidayWork: 0 } }
+            logs: {}
         };
 
         // Initialize app
@@ -562,7 +766,7 @@
             setupEventListeners();
         }
 
-        // Load data from localStorage (permanent storage)
+        // Load data from localStorage
         function loadData() {
             try {
                 const stored = localStorage.getItem('officeTimeTrackerData');
@@ -574,7 +778,7 @@
             }
         }
 
-        // Save data to localStorage (permanent storage)
+        // Save data to localStorage
         function saveData() {
             try {
                 localStorage.setItem('officeTimeTrackerData', JSON.stringify(appData));
@@ -595,10 +799,202 @@
             return date.toLocaleDateString('en-IN', options);
         }
 
+        // Format time for display (HH:MM AM/PM)
+        function formatTimeDisplay(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+        }
+
+        // Format timestamp to datetime-local input value
+        function formatDateTimeLocal(timestamp) {
+            const date = new Date(timestamp);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
+
+        // Format seconds to HH:MM:SS
+        function formatTime(seconds) {
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            const s = seconds % 60;
+            return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        // Format seconds to Xh Ym
+        function formatHoursMinutes(seconds) {
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            return `${h}h ${m}m`;
+        }
+
         // Update current date display
         function updateCurrentDate() {
             const today = new Date();
             document.getElementById('current-date').textContent = formatDate(today);
+        }
+
+        // Calculate elapsed time from login
+        function calculateElapsedTime(loginTime, logoutTime) {
+            const endTime = logoutTime || Date.now();
+            return Math.floor((endTime - loginTime) / 1000);
+        }
+
+        // Update elapsed time display (CHANGED: Now updates every second)
+        function updateElapsedTimeDisplay() {
+            const todayKey = getTodayKey();
+            const todayLog = appData.logs[todayKey];
+
+            if (todayLog && todayLog.loginTime) {
+                const elapsed = calculateElapsedTime(todayLog.loginTime, todayLog.logoutTime);
+                document.getElementById('elapsed-time-display').textContent = formatTime(elapsed);
+
+                // Update warning
+                const warningContainer = document.getElementById('warning-container');
+                if (todayLog.logoutTime) {
+                    const hours = elapsed / 3600;
+                    if (hours < 8) {
+                        warningContainer.innerHTML = `<div class="warning-msg">⚠️ Total time is ${formatHoursMinutes(elapsed)} - less than 8 hours. You can record a new logout time.</div>`;
+                    } else {
+                        warningContainer.innerHTML = '';
+                    }
+                } else {
+                    warningContainer.innerHTML = '';
+                }
+            }
+        }
+
+        // Record login time
+        function recordLogin() {
+            const todayKey = getTodayKey();
+            const now = Date.now();
+
+            appData.logs[todayKey] = {
+                mode: 'office',
+                loginTime: now,
+                logoutTime: null
+            };
+            saveData();
+
+            // Show after-login screen
+            document.getElementById('before-login').classList.add('hidden');
+            document.getElementById('after-login').classList.remove('hidden');
+
+            // Display login time
+            document.getElementById('login-time-display').textContent = formatTimeDisplay(now);
+            document.getElementById('logout-time-display').textContent = 'Not recorded';
+
+            // Set time inputs (HH:MM format)
+            const nowDate = new Date(now);
+            document.getElementById('edit-login-input').value = `${String(nowDate.getHours()).padStart(2, '0')}:${String(nowDate.getMinutes()).padStart(2, '0')}`;
+            document.getElementById('edit-logout-input').value = '';
+
+
+            // Start updating display EVERY SECOND (CHANGED from 60000 to 1000)
+            updateElapsedTimeDisplay();
+            if (updateInterval) clearInterval(updateInterval);
+            updateInterval = setInterval(updateElapsedTimeDisplay, 1000);
+        }
+
+        // Record logout time
+        function recordLogout() {
+            const todayKey = getTodayKey();
+            const todayLog = appData.logs[todayKey];
+
+            if (todayLog && todayLog.loginTime) {
+                const now = Date.now();
+                todayLog.logoutTime = now;
+                saveData();
+
+                // Display logout time
+                document.getElementById('logout-time-display').textContent = formatTimeDisplay(now);
+                const logoutDate = new Date(now);
+                document.getElementById('edit-logout-input').value = `${String(logoutDate.getHours()).padStart(2, '0')}:${String(logoutDate.getMinutes()).padStart(2, '0')}`;
+
+
+                // Update display immediately
+                updateElapsedTimeDisplay();
+
+                // Keep updating even after logout (user can see time and may want to change logout time)
+                // Don't stop interval - let it keep updating in case user wants real-time view
+            }
+        }
+
+        // Save custom times
+        function saveCustomTimes() {
+            const todayKey = getTodayKey();
+            const todayLog = appData.logs[todayKey];
+
+            if (todayLog) {
+                const loginInput = document.getElementById('edit-login-input').value;
+                const logoutInput = document.getElementById('edit-logout-input').value;
+                const now = Date.now();
+
+                if (loginInput) {
+                    // Parse time and apply to today's date
+                    const [hours, minutes] = loginInput.split(':');
+                    const loginDate = new Date();
+                    loginDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+                    const loginTimestamp = loginDate.getTime();
+
+                    // Check if login time is in future
+                    if (loginTimestamp > now) {
+                        alert('❌ Login time cannot be in the future!');
+                        return;
+                    }
+
+                    todayLog.loginTime = loginTimestamp;
+                    document.getElementById('login-time-display').textContent = formatTimeDisplay(loginTimestamp);
+                }
+
+                if (logoutInput) {
+                    // Parse time and apply to today's date
+                    const [hours, minutes] = logoutInput.split(':');
+                    const logoutDate = new Date();
+                    logoutDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+                    const logoutTimestamp = logoutDate.getTime();
+
+                    // Check if logout time is in future
+                    if (logoutTimestamp > now) {
+                        alert('❌ Logout time cannot be in the future!');
+                        return;
+                    }
+
+                    // Check if logout is before login
+                    if (todayLog.loginTime && logoutTimestamp < todayLog.loginTime) {
+                        alert('❌ Logout time cannot be before login time!');
+                        return;
+                    }
+
+                    todayLog.logoutTime = logoutTimestamp;
+                    document.getElementById('logout-time-display').textContent = formatTimeDisplay(logoutTimestamp);
+                } else {
+                    todayLog.logoutTime = null;
+                    document.getElementById('logout-time-display').textContent = 'Not recorded';
+                }
+
+                saveData();
+                updateElapsedTimeDisplay();
+                alert('✅ Times updated successfully!');
+            }
+        }
+
+
+        // Reset day
+        function resetDay() {
+            const todayKey = getTodayKey();
+            delete appData.logs[todayKey];
+            saveData();
+
+            if (updateInterval) {
+                clearInterval(updateInterval);
+                updateInterval = null;
+            }
+
+            showModeSelection();
         }
 
         // Check if today already has a log
@@ -611,8 +1007,32 @@
                     showWFHScreen();
                 } else if (todayLog.mode === 'office') {
                     showOfficeScreen();
-                    currentSeconds = todayLog.seconds || 0;
-                    updateTimerDisplay();
+
+                    if (todayLog.loginTime) {
+                        // Show after-login screen
+                        document.getElementById('before-login').classList.add('hidden');
+                        document.getElementById('after-login').classList.remove('hidden');
+
+                        // Display times
+                        document.getElementById('login-time-display').textContent = formatTimeDisplay(todayLog.loginTime);
+                        const loginDate = new Date(todayLog.loginTime);
+                        document.getElementById('edit-login-input').value = `${String(loginDate.getHours()).padStart(2, '0')}:${String(loginDate.getMinutes()).padStart(2, '0')}`;
+
+                        if (todayLog.logoutTime) {
+                            document.getElementById('logout-time-display').textContent = formatTimeDisplay(todayLog.logoutTime);
+                            const logoutDate = new Date(todayLog.logoutTime);
+                            document.getElementById('edit-logout-input').value = `${String(logoutDate.getHours()).padStart(2, '0')}:${String(logoutDate.getMinutes()).padStart(2, '0')}`;
+                        } else {
+                            document.getElementById('logout-time-display').textContent = 'Not recorded';
+                            document.getElementById('edit-logout-input').value = '';
+                            // Start updating if not logged out (CHANGED: every 1 second)
+                            if (updateInterval) clearInterval(updateInterval);
+                            updateInterval = setInterval(updateElapsedTimeDisplay, 1000);
+                        }
+
+                        // Update display
+                        updateElapsedTimeDisplay();
+                    }
                 } else if (todayLog.mode === 'holiday') {
                     showHolidayScreen();
                 }
@@ -637,7 +1057,7 @@
             document.getElementById('holiday-screen').classList.add('hidden');
 
             const todayKey = getTodayKey();
-            appData.logs[todayKey] = { mode: 'wfh', seconds: 0 };
+            appData.logs[todayKey] = { mode: 'wfh' };
             saveData();
         }
 
@@ -650,8 +1070,9 @@
 
             const todayKey = getTodayKey();
             if (!appData.logs[todayKey]) {
-                appData.logs[todayKey] = { mode: 'office', seconds: 0 };
-                saveData();
+                // Show before-login
+                document.getElementById('before-login').classList.remove('hidden');
+                document.getElementById('after-login').classList.add('hidden');
             }
         }
 
@@ -663,82 +1084,12 @@
             document.getElementById('holiday-screen').classList.remove('hidden');
 
             const todayKey = getTodayKey();
-            appData.logs[todayKey] = { mode: 'holiday', seconds: 8 * 3600 }; // 8 hours counted as office
+            appData.logs[todayKey] = {
+                mode: 'holiday',
+                loginTime: new Date().setHours(9, 0, 0, 0),
+                logoutTime: new Date().setHours(17, 0, 0, 0)
+            };
             saveData();
-        }
-
-        // Format seconds to HH:MM:SS
-        function formatTime(seconds) {
-            const h = Math.floor(seconds / 3600);
-            const m = Math.floor((seconds % 3600) / 60);
-            const s = seconds % 60;
-            return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-        }
-
-        // Format seconds to Xh Ym
-        function formatHoursMinutes(seconds) {
-            const h = Math.floor(seconds / 3600);
-            const m = Math.floor((seconds % 3600) / 60);
-            return `${h}h ${m}m`;
-        }
-
-        // Update timer display
-        function updateTimerDisplay() {
-            document.getElementById('timer-display').textContent = formatTime(currentSeconds);
-
-        }
-
-        // Start timer
-        function startTimer() {
-            document.getElementById('start-prompt').classList.add('hidden');
-            document.getElementById('timer-controls').classList.remove('hidden');
-
-            // Load existing time for today if available
-            const todayKey = getTodayKey();
-            if (appData.logs[todayKey] && appData.logs[todayKey].seconds) {
-                currentSeconds = appData.logs[todayKey].seconds;
-                updateTimerDisplay();
-            }
-
-            isPaused = false;
-            timerInterval = setInterval(() => {
-                if (!isPaused) {
-                    currentSeconds++;
-                    updateTimerDisplay();
-
-                    appData.logs[todayKey].seconds = currentSeconds;
-                    saveData();
-                }
-            }, 1000);
-        }
-
-        // Pause timer
-        function pauseTimer() {
-            isPaused = !isPaused;
-            const pauseBtn = document.getElementById('pause-timer-btn');
-            pauseBtn.textContent = isPaused ? '▶️ Resume Timer' : '⏸️ Pause Timer';
-        }
-
-        // Stop timer and log
-        function stopTimer() {
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-            }
-
-            const todayKey = getTodayKey();
-            appData.logs[todayKey].seconds = currentSeconds;
-            saveData();
-
-            alert(`Office hours logged: ${formatHoursMinutes(currentSeconds)}`);
-
-            // Reset pause state and button text
-            isPaused = false;
-            document.getElementById('pause-timer-btn').textContent = '⏸️ Pause Timer';
-
-            // Show start prompt again to allow resuming
-            document.getElementById('start-prompt').classList.remove('hidden');
-            document.getElementById('timer-controls').classList.add('hidden');
         }
 
         // Get week date range
@@ -768,8 +1119,43 @@
             return dates;
         }
 
+        // Check if week is in future
+        function isWeekInFuture(offset) {
+            const { monday } = getWeekRange(offset);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            return monday > today;
+        }
+
+        // Get random fun message
+        function getRandomFunMessage() {
+            return funMessages[Math.floor(Math.random() * funMessages.length)];
+        }
+
         // Update analytics view
         function updateAnalytics() {
+            // Check if future week
+            if (isWeekInFuture(currentWeekOffset)) {
+                document.getElementById('future-week-message').classList.remove('hidden');
+                document.getElementById('analytics-content').classList.add('hidden');
+
+                // HIDE next button when on future week
+                document.getElementById('next-week').style.display = 'none';
+
+                const funMsg = getRandomFunMessage();
+                const emoji = funMsg.type === 'joke' ? '😄' : funMsg.type === 'quote' ? '💡' : '🧩';
+                document.getElementById('fun-content').innerHTML = `
+                    <h3>${emoji} ${funMsg.type === 'joke' ? 'Time Travel Alert!' : funMsg.type === 'quote' ? 'Words of Wisdom' : 'Paheli Time!'}</h3>
+                    <p>${funMsg.text}</p>
+                `;
+                return;
+            }
+
+            // Show regular analytics and SHOW next button
+            document.getElementById('future-week-message').classList.add('hidden');
+            document.getElementById('analytics-content').classList.remove('hidden');
+            document.getElementById('next-week').style.display = 'block';
+
             const { monday, sunday } = getWeekRange(currentWeekOffset);
             const dates = getDatesInWeek(currentWeekOffset);
 
@@ -777,8 +1163,7 @@
             const weekRangeText = `${monday.getDate()} ${monday.toLocaleString('en-IN', { month: 'short' })} - ${sunday.getDate()} ${sunday.toLocaleString('en-IN', { month: 'short' })} ${sunday.getFullYear()}`;
             document.getElementById('week-range').textContent = weekRangeText;
 
-            // Calculate total hours
-            let totalSeconds = 0;
+            // Calculate metrics
             let officeDays8Plus = 0;
             let wfhDays = 0;
             let holidayDays = 0;
@@ -787,14 +1172,14 @@
                 const key = date.toISOString().split('T')[0];
                 const log = appData.logs[key];
                 if (log) {
-                    if (log.mode === 'office' || log.mode === 'holiday') {
-                        totalSeconds += log.seconds || 0;
-                        if ((log.seconds || 0) >= 8 * 3600) { // 8 hours
+                    if (log.mode === 'office' && log.loginTime) {
+                        const elapsed = calculateElapsedTime(log.loginTime, log.logoutTime);
+                        if (elapsed >= 8 * 3600) {
                             officeDays8Plus++;
                         }
-                        if (log.mode === 'holiday') {
-                            holidayDays++;
-                        }
+                    } else if (log.mode === 'holiday') {
+                        officeDays8Plus++;
+                        holidayDays++;
                     } else if (log.mode === 'wfh') {
                         wfhDays++;
                     }
@@ -820,6 +1205,7 @@
 
                 const dayLog = document.createElement('div');
                 dayLog.className = 'day-log';
+                dayLog.onclick = () => openEditDayModal(key, date);
 
                 const dayInfo = document.createElement('div');
                 dayInfo.className = 'day-info';
@@ -846,10 +1232,15 @@
                     dayHours.textContent = 'WFH';
                 } else if (log.mode === 'holiday') {
                     dayHours.className = 'day-hours';
-                    dayHours.innerHTML = formatHoursMinutes(log.seconds || 0) + ' <span class="holiday-badge" style="margin-left: 8px; font-size: 10px;">🏖️</span>';
+                    dayHours.innerHTML = '8h 0m <span class="holiday-badge" style="margin-left: 8px; font-size: 10px;">🏖️</span>';
+                } else if (log.mode === 'office' && log.loginTime) {
+                    const elapsed = calculateElapsedTime(log.loginTime, log.logoutTime);
+                    dayHours.className = 'day-hours';
+                    dayHours.textContent = formatHoursMinutes(elapsed);
                 } else {
                     dayHours.className = 'day-hours';
-                    dayHours.textContent = formatHoursMinutes(log.seconds || 0);
+                    dayHours.textContent = '-';
+                    dayHours.style.color = 'var(--color-text-secondary)';
                 }
 
                 dayLog.appendChild(dayInfo);
@@ -863,32 +1254,30 @@
             const insightsContainer = document.getElementById('weekly-insights');
             insightsContainer.innerHTML = '';
 
-            // Calculate remaining days needed
             const requiredOfficeDays = 3;
             const maxWfhDays = 2;
             const remainingOfficeDays = Math.max(0, requiredOfficeDays - officeDays8Plus);
 
-            // Current day of week (Monday = 0, Sunday = 6)
             const today = new Date();
             const todayInWeek = dates.findIndex(date => date.toDateString() === today.toDateString());
-            const remainingDaysInWeek = Math.max(0, 6 - todayInWeek); // Excluding Sunday
+            const remainingDaysInWeek = Math.max(0, 6 - todayInWeek);
 
             // Office compliance
             const officeInsight = document.createElement('div');
             officeInsight.className = 'insight-item';
             officeInsight.innerHTML = `
-                    <span class="insight-label">Office Days (8+ hrs)</span>
-                    <span class="insight-value ${officeDays8Plus >= requiredOfficeDays ? 'success' : 'warning'}">${officeDays8Plus}/${requiredOfficeDays}</span>
-                `;
+                <span class="insight-label">Office Days (8+ hrs)</span>
+                <span class="insight-value ${officeDays8Plus >= requiredOfficeDays ? 'success' : 'warning'}">${officeDays8Plus}/${requiredOfficeDays}</span>
+            `;
             insightsContainer.appendChild(officeInsight);
 
             // WFH compliance
             const wfhInsight = document.createElement('div');
             wfhInsight.className = 'insight-item';
             wfhInsight.innerHTML = `
-                    <span class="insight-label">WFH Days used</span>
-                    <span class="insight-value ${wfhDays <= maxWfhDays ? 'success' : 'warning'}">${wfhDays}/${maxWfhDays}</span>
-                `;
+                <span class="insight-label">WFH Days used</span>
+                <span class="insight-value ${wfhDays <= maxWfhDays ? 'success' : 'warning'}">${wfhDays}/${maxWfhDays}</span>
+            `;
             insightsContainer.appendChild(wfhInsight);
 
             // Holiday days
@@ -896,13 +1285,13 @@
                 const holidayInsight = document.createElement('div');
                 holidayInsight.className = 'insight-item';
                 holidayInsight.innerHTML = `
-                        <span class="insight-label">Holiday Days</span>
-                        <span class="insight-value">${holidayDays}</span>
-                    `;
+                    <span class="insight-label">Holiday Days</span>
+                    <span class="insight-value">${holidayDays}</span>
+                `;
                 insightsContainer.appendChild(holidayInsight);
             }
 
-            // Recommendation
+            // Status
             const recommendationInsight = document.createElement('div');
             recommendationInsight.className = 'insight-item';
             let recommendation = '';
@@ -922,10 +1311,95 @@
             }
 
             recommendationInsight.innerHTML = `
-                    <span class="insight-label">Status</span>
-                    <span class="insight-value ${recommendationClass}">${recommendation}</span>
-                `;
+                <span class="insight-label">Status</span>
+                <span class="insight-value ${recommendationClass}">${recommendation}</span>
+            `;
             insightsContainer.appendChild(recommendationInsight);
+        }
+
+        // Open edit day modal
+        function openEditDayModal(key, date) {
+            editingDayKey = key;
+            const log = appData.logs[key];
+
+            document.getElementById('edit-day-date').textContent = formatDate(date);
+
+            if (log) {
+                document.getElementById('edit-mode-select').value = log.mode;
+
+                if (log.mode === 'office' && log.loginTime) {
+                    document.getElementById('edit-day-login-input').value = formatDateTimeLocal(log.loginTime);
+                    if (log.logoutTime) {
+                        document.getElementById('edit-day-logout-input').value = formatDateTimeLocal(log.logoutTime);
+                    } else {
+                        document.getElementById('edit-day-logout-input').value = '';
+                    }
+                    document.getElementById('edit-office-times').classList.remove('hidden');
+                } else {
+                    document.getElementById('edit-office-times').classList.add('hidden');
+                }
+            } else {
+                document.getElementById('edit-mode-select').value = 'office';
+                document.getElementById('edit-day-login-input').value = '';
+                document.getElementById('edit-day-logout-input').value = '';
+                document.getElementById('edit-office-times').classList.remove('hidden');
+            }
+
+            document.getElementById('edit-day-modal').classList.remove('hidden');
+        }
+
+        // Close edit day modal
+        function closeEditDayModal() {
+            document.getElementById('edit-day-modal').classList.add('hidden');
+            editingDayKey = null;
+        }
+
+        // Save day edit
+        function saveDayEdit() {
+            if (!editingDayKey) return;
+
+            const mode = document.getElementById('edit-mode-select').value;
+
+            if (mode === 'wfh') {
+                appData.logs[editingDayKey] = { mode: 'wfh' };
+            } else if (mode === 'holiday') {
+                const date = new Date(editingDayKey);
+                appData.logs[editingDayKey] = {
+                    mode: 'holiday',
+                    loginTime: date.setHours(9, 0, 0, 0),
+                    logoutTime: date.setHours(17, 0, 0, 0)
+                };
+            } else if (mode === 'office') {
+                const loginInput = document.getElementById('edit-day-login-input').value;
+                const logoutInput = document.getElementById('edit-day-logout-input').value;
+
+                if (loginInput) {
+                    appData.logs[editingDayKey] = {
+                        mode: 'office',
+                        loginTime: new Date(loginInput).getTime(),
+                        logoutTime: logoutInput ? new Date(logoutInput).getTime() : null
+                    };
+                } else {
+                    alert('Please enter a login time for office mode');
+                    return;
+                }
+            }
+
+            saveData();
+            updateAnalytics();
+            closeEditDayModal();
+        }
+
+        // Delete day
+        function deleteDay() {
+            if (!editingDayKey) return;
+
+            if (confirm('Are you sure you want to delete this day\'s record?')) {
+                delete appData.logs[editingDayKey];
+                saveData();
+                updateAnalytics();
+                closeEditDayModal();
+            }
         }
 
         // Setup event listeners
@@ -934,20 +1408,18 @@
             document.getElementById('wfh-btn').addEventListener('click', showWFHScreen);
             document.getElementById('office-btn').addEventListener('click', showOfficeScreen);
             document.getElementById('holiday-btn').addEventListener('click', showHolidayScreen);
-            document.getElementById('change-mode-btn').addEventListener('click', () => {
-                const todayKey = getTodayKey();
-                delete appData.logs[todayKey];
-                saveData();
-                currentSeconds = 0;
-                showOfficeScreen();
-            });
+
+            // Office screen
+            document.getElementById('record-login-btn').addEventListener('click', recordLogin);
+            document.getElementById('record-logout-btn').addEventListener('click', recordLogout);
+            document.getElementById('save-custom-times-btn').addEventListener('click', saveCustomTimes);
+            document.getElementById('reset-day-btn').addEventListener('click', resetDay);
 
             // Holiday screen
             document.getElementById('uncheck-holiday-btn').addEventListener('click', () => {
                 const todayKey = getTodayKey();
                 delete appData.logs[todayKey];
                 saveData();
-                currentSeconds = 0;
                 showModeSelection();
             });
 
@@ -956,7 +1428,10 @@
                 const todayKey = getTodayKey();
                 delete appData.logs[todayKey];
                 saveData();
-                currentSeconds = 0;
+                if (updateInterval) {
+                    clearInterval(updateInterval);
+                    updateInterval = null;
+                }
                 showModeSelection();
             });
 
@@ -967,10 +1442,18 @@
                 showModeSelection();
             });
 
-            // Timer controls
-            document.getElementById('start-timer-btn').addEventListener('click', startTimer);
-            document.getElementById('pause-timer-btn').addEventListener('click', pauseTimer);
-            document.getElementById('stop-timer-btn').addEventListener('click', stopTimer);
+            // Edit day modal
+            document.getElementById('save-day-edit-btn').addEventListener('click', saveDayEdit);
+            document.getElementById('delete-day-btn').addEventListener('click', deleteDay);
+            document.getElementById('cancel-edit-btn').addEventListener('click', closeEditDayModal);
+
+            document.getElementById('edit-mode-select').addEventListener('change', (e) => {
+                if (e.target.value === 'office') {
+                    document.getElementById('edit-office-times').classList.remove('hidden');
+                } else {
+                    document.getElementById('edit-office-times').classList.add('hidden');
+                }
+            });
 
             // Bottom navigation
             document.getElementById('nav-today').addEventListener('click', () => {
@@ -1002,149 +1485,6 @@
 
         // Initialize app on load
         init();
-
-        // Register Service Worker for PWA
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register(getServiceWorkerCode())
-                    .then(registration => console.log('SW registered'))
-                    .catch(err => console.log('SW registration failed'));
-            });
-        }
-
-        // Generate service worker as blob URL
-        function getServiceWorkerCode() {
-            const swCode = `
-                const CACHE_NAME = 'office-tracker-v1';
-                const urlsToCache = ['/'];
-
-                self.addEventListener('install', event => {
-                    event.waitUntil(
-                        caches.open(CACHE_NAME)
-                            .then(cache => cache.addAll(urlsToCache))
-                    );
-                    self.skipWaiting();
-                });
-
-                self.addEventListener('fetch', event => {
-                    event.respondWith(
-                        caches.match(event.request)
-                            .then(response => response || fetch(event.request))
-                    );
-                });
-
-                self.addEventListener('activate', event => {
-                    event.waitUntil(
-                        caches.keys().then(cacheNames => {
-                            return Promise.all(
-                                cacheNames.filter(name => name !== CACHE_NAME)
-                                    .map(name => caches.delete(name))
-                            );
-                        })
-                    );
-                    return self.clients.claim();
-                });
-            `;
-
-            const blob = new Blob([swCode], { type: 'application/javascript' });
-            return URL.createObjectURL(blob);
-        }
-
-        // Add PWA manifest dynamically
-        const manifestData = {
-            "name": "Office Time Tracker",
-            "short_name": "Office Timer",
-            "start_url": window.location.pathname,
-            "display": "standalone",
-            "background_color": "#fcfcf9",
-            "theme_color": "#21808d",
-            "orientation": "portrait",
-            "icons": [
-                {
-                    "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect fill='%2321808d' width='192' height='192'/%3E%3Cpath fill='%23fcfcf9' d='M104 48c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24h16c13.3 0 24-10.7 24-24V72c0-13.3-10.7-24-24-24H88zm0 16h8v8h-8v-8zm0 24h8v40h-8V88z'/%3E%3C/svg%3E",
-                    "sizes": "192x192",
-                    "type": "image/svg+xml",
-                    "purpose": "any maskable"
-                },
-                {
-                    "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect fill='%2321808d' width='512' height='512'/%3E%3Cpath fill='%23fcfcf9' d='M278 128c-35.5 0-64 28.5-64 64v128c0 35.5 28.5 64 64 64h43c35.5 0 64-28.5 64-64V192c0-35.5-28.5-64-64-64h-43zm0 43h21v21h-21v-21zm0 64h21v107h-21V235z'/%3E%3C/svg%3E",
-                    "sizes": "512x512",
-                    "type": "image/svg+xml",
-                    "purpose": "any maskable"
-                }
-            ]
-        };
-
-        const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
-        const manifestURL = URL.createObjectURL(manifestBlob);
-        const manifestLink = document.createElement('link');
-        manifestLink.rel = 'manifest';
-        manifestLink.href = manifestURL;
-        document.head.appendChild(manifestLink);
-
-        // ========== PWA: SERVICE WORKER REGISTRATION ==========
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(registration => {
-                        console.log('SW registered: ', registration);
-                    })
-                    .catch(registrationError => {
-                        console.log('SW registration failed: ', registrationError);
-                    });
-            });
-        }
-
-        // ========== NOTIFICATION FUNCTIONS ==========
-        async function requestNotificationPermission() {
-            if ('Notification' in window) {
-                const permission = await Notification.requestPermission();
-                return permission === 'granted';
-            }
-            return false;
-        }
-
-        function showNotification(title, body, options = {}) {
-            if ('Notification' in window && Notification.permission === 'granted') {
-                if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-                    navigator.serviceWorker.ready.then(registration => {
-                        registration.showNotification(title, {
-                            body: body,
-                            icon: '/icon-192.png',
-                            badge: '/icon-192.png',
-                            vibrate: [200, 100, 200],
-                            ...options
-                        });
-                    });
-                } else {
-                    new Notification(title, {
-                        body: body,
-                        icon: '/icon-192.png',
-                        ...options
-                    });
-                }
-            }
-        }
-
-        // ========== CHECK 8 HOURS NOTIFICATION ==========
-        function checkEightHoursNotification(todayData, today) {
-            if (todayData && todayData.mode === 'office' && todayData.hours >= 8) {
-                const storedNotified = localStorage.getItem('notified_8hrs_' + today);
-                if (!storedNotified) {
-                    showNotification(
-                        '🎉 8 Hours Completed!',
-                        `Great job! You've completed ${todayData.hours.toFixed(1)} hours in office today.`,
-                        { tag: 'eight-hours-complete', requireInteraction: true }
-                    );
-                    localStorage.setItem('notified_8hrs_' + today, 'true');
-                }
-            }
-        }
-
-
-
-
-
     </script>
 </body>
 
