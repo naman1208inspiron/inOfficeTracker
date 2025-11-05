@@ -7,6 +7,7 @@
     <title>Office Time Tracker</title>
     <meta name="theme-color" content="#21808d">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Office Timer">
     <link rel="apple-touch-icon"
@@ -590,7 +591,9 @@
                             <h4>🕰️ Edit Times (if you forgot to record)</h4>
                             <div class="form-group">
                                 <label class="form-label">Login Time (Today only)</label>
-                                <input type="time" id="edit-login-input" class="form-input">
+                                <label for="edit-login-input" class="form-label">Login Time (Today only)</label>
+                                <input type="time" id="edit-login-input" class="form-input"
+                                    aria-label="Login time for today" title="Login time">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Logout Time (Today only)</label>
@@ -692,7 +695,7 @@
 
     <script>
         // ========== APP VERSION (INCREMENT ON EVERY DEPLOY) ==========
-        const APP_VERSION = 'v1.0.2';
+        const APP_VERSION = 'v1.0.3';
         console.log('App Version:', APP_VERSION);
 
         // ========== PWA: SERVICE WORKER WITH AUTO-UPDATE ==========
@@ -817,7 +820,35 @@
             { type: 'paheli', text: '🎯 Paheli: Kal aayega par kabhi nahi aata, woh kya hai?\n\nAnswer: Kal! Focus on aaj! 😊' },
             { type: 'paheli', text: '🧠 Paheli: Office mein sabse zyada kya chalta hai?\n\nAnswer: AC! 😂' },
             { type: 'paheli', text: '🤷 Paheli: Woh kaunsa din hai jab sab log busy dikhte hain par kaam nahi hota?\n\nAnswer: Monday! 😴' },
-            { type: 'paheli', text: '💼 Paheli: Aise kaun se log hain jo hamesha kaam karte dikhte hain par kabhi thakte nahi?\n\nAnswer: Laptop ke fan! 🌀' }
+            { type: 'paheli', text: '💼 Paheli: Aise kaun se log hain jo hamesha kaam karte dikhte hain par kabhi thakte nahi?\n\nAnswer: Laptop ke fan! 🌀' },
+            { type: 'joke', text: 'Why did the actor break up with the script?\n\nIt had too many "issues"!' },
+            { type: 'joke', text: 'What did the producer say to the star?\n\n"Tumse na ho payega!"' },
+            { type: 'joke', text: 'Why was the Bollywood movie always cold?\n\nBecause it was full of "chills" and "thrills"!' },
+            { type: 'joke', text: 'What is a Bollywood ghost\'s favorite song?\n\n"Bhoot Hoon Main!"' },
+            { type: 'joke', text: 'How do Bollywood actors stay cool?\n\nThey have a lot of "fans"!' },
+            { type: 'joke', text: 'What did the dialogue say to the actor?\n\n"Don\'t just stand there, deliver me!"' },
+            { type: 'joke', text: 'Why don\'t they play hide and seek in Bollywood?\n\nBecause "Don ko pakadna mushkil hi nahi, namumkin hai!"' },
+            { type: 'joke', text: 'What did the samosa say to the chutney in the movie interval?\n\n"You complete me!"' },
+            { type: 'joke', text: 'Why was the villain bad at coding?\n\nHe could only handle "plots"!' },
+            { type: 'joke', text: 'How many Bollywood stars does it take to change a lightbulb?\n\nFive! One to change it, and four to dance around them in the rain.' },
+            { type: 'joke', text: 'Why do programmers prefer dark mode?\n\nBecause light attracts bugs!' },
+            { type: 'joke', text: 'How many programmers does it take to change a light bulb?\n\nNone! It\'s a hardware problem.' },
+            { type: 'joke', text: 'Why did the programmer quit his job?\n\nHe didn\'t get arrays.' },
+            { type: 'joke', text: 'What\'s the object-oriented way to become wealthy?\n\nInheritance.' },
+            { type: 'joke', text: 'Why was the JavaScript developer sad?\n\nBecause he didn\'t know how to "null" his feelings.' },
+            { type: 'joke', text: 'A SQL query walks into a bar, walks up to two tables and asks...\n\n"Can I join you?"' },
+            { type: 'joke', text: 'There are 10 types of people in the world:\n\nThose who understand binary, and those who don\'t.' },
+            { type: 'joke', text: 'What\'s the difference between a Bollywood movie and a software demo?\n\nOne is an unrealistic fantasy... and the other is a Bollywood movie.' },
+            { type: 'joke', text: 'Why did the Bollywood hero lose his database?\n\nBecause he dropped his tables!' },
+            { type: 'joke', text: 'My code is like a Bollywood plot twist...\n\nNobody saw it coming, and now everyone is confused.' },
+            { type: 'joke', text: 'I told my therapist I had "commitment" issues.\n\nNow I have to review and merge my own pull requests.' },
+            { type: A 'joke', text: 'What\'s a developer\'s favorite song?\n\n"Hello, darkness, my old friend... I\'ve come to talk with you again."' },
+            { type: 'joke', text: 'A bug report walks into a bar.\n\nThe bartender says, "What\'ll it be?"\nThe bug report says, "I don\'t know, it worked on my machine."' },
+            { type: 'joke', text: 'Why do Bollywood villains live in such big houses?\n\nSo their evil laugh has a good echo!' },
+            { type: 'joke', text: 'My code never has bugs.\n\nIt just develops random, undocumented features.' },
+            { type: 'joke', text: 'I put my code in the "try" block...\n\n...because I\'m not sure it\'s going to "catch" on.' },
+            { type: 'joke', text: 'A developer\'s love life is like a code release in production on a Friday.\n\nRisky, full of bugs, and probably going to crash over the weekend.' },
+            { type: 'joke', text: 'What did the Bollywood star say to the CSS?\n\n"Make me look good, even if my logic is all over the place!"' }
         ];
 
         let appData = { logs: {} };
