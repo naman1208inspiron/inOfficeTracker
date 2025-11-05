@@ -1,6 +1,6 @@
 // ========== SERVICE WORKER WITH CACHE VERSIONING ==========
 // INCREMENT THIS VERSION ON EVERY DEPLOY - FORCES CACHE UPDATE
-const CACHE_VERSION = 'v1.0.2';
+const CACHE_VERSION = 'v1.0.3';
 const CACHE_NAME = `office-tracker-${CACHE_VERSION}`;
 
 // Files to cache
