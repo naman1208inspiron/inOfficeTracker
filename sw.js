@@ -1,6 +1,6 @@
 // ========== SERVICE WORKER WITH CACHE VERSIONING ==========
 // INCREMENT THIS VERSION ON EVERY DEPLOY - FORCES CACHE UPDATE
-const CACHE_VERSION = 'v1.0.3';
+const CACHE_VERSION = 'v1.0.4';
 const CACHE_NAME = `office-tracker-${CACHE_VERSION}`;
 
 // Files to cache
@@ -13,7 +13,7 @@ const urlsToCache = [
 // Install event - cache files
 self.addEventListener('install', (event) => {
   console.log('[SW] Install event, cache version:', CACHE_VERSION);
-  
+
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
@@ -30,7 +30,7 @@ self.addEventListener('install', (event) => {
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
   console.log('[SW] Activate event, cache version:', CACHE_VERSION);
-  
+
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
@@ -56,13 +56,13 @@ self.addEventListener('fetch', (event) => {
       .then((response) => {
         // Clone the response
         const responseToCache = response.clone();
-        
+
         // Update cache with new response
         caches.open(CACHE_NAME)
           .then((cache) => {
             cache.put(event.request, responseToCache);
           });
-        
+
         return response;
       })
       .catch(() => {
@@ -94,7 +94,7 @@ self.addEventListener('message', (event) => {
 // Push notification event (for future use)
 self.addEventListener('push', (event) => {
   console.log('[SW] Push notification received');
-  
+
   if (event.data) {
     const data = event.data.json();
     const options = {
@@ -104,7 +104,7 @@ self.addEventListener('push', (event) => {
       vibrate: [200, 100, 200],
       data: data.data || {}
     };
-    
+
     event.waitUntil(
       self.registration.showNotification(data.title || 'Office Time Tracker', options)
     );
@@ -115,7 +115,7 @@ self.addEventListener('push', (event) => {
 self.addEventListener('notificationclick', (event) => {
   console.log('[SW] Notification clicked');
   event.notification.close();
-  
+
   event.waitUntil(
     clients.openWindow('/')
   );

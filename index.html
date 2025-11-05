@@ -590,13 +590,12 @@
                         <div class="edit-times-section">
                             <h4>🕰️ Edit Times (if you forgot to record)</h4>
                             <div class="form-group">
-                                <label class="form-label">Login Time (Today only)</label>
-                                <label for="edit-login-input" class="form-label">Login Time (Today only)</label>
+                                <label for="edit-login-input" class="form-label">Login Time</label>
                                 <input type="time" id="edit-login-input" class="form-input"
                                     aria-label="Login time for today" title="Login time">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Logout Time (Today only)</label>
+                                <label for="edit-logout-input" class="form-label">Logout Time</label>
                                 <input type="time" id="edit-logout-input" class="form-input">
                             </div>
                             <button class="btn btn-primary" id="save-custom-times-btn">💾 Save Custom Times</button>
@@ -695,7 +694,7 @@
 
     <script>
         // ========== APP VERSION (INCREMENT ON EVERY DEPLOY) ==========
-        const APP_VERSION = 'v1.0.3';
+        const APP_VERSION = 'v1.0.4';
         console.log('App Version:', APP_VERSION);
 
         // ========== PWA: SERVICE WORKER WITH AUTO-UPDATE ==========
