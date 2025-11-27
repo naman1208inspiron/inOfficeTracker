@@ -694,7 +694,7 @@
 
     <script>
         // ========== APP VERSION (INCREMENT ON EVERY DEPLOY) ==========
-        const APP_VERSION = 'v1.0.4';
+        const APP_VERSION = 'v1.0.5';
         console.log('App Version:', APP_VERSION);
 
         // ========== PWA: SERVICE WORKER WITH AUTO-UPDATE ==========
@@ -1250,8 +1250,12 @@
             const maxWfhDays = 2;
             const remainingOfficeDays = Math.max(0, requiredOfficeDays - officeDays8Plus);
             const today = new Date();
-            const todayInWeek = dates.findIndex(date => date.toDateString() === today.toDateString());
-            const remainingDaysInWeek = Math.max(0, 6 - todayInWeek);
+            const todayInWeek = dates.findIndex(date => {
+                const dateCheck = new Date(date);
+                dateCheck.setHours(0, 0, 0, 0);
+                return dateCheck.getTime() === today.getTime();
+            });
+            const remainingDaysInWeek = Math.max(0, 6 - (todayInWeek >= 0 ? todayInWeek : 0));
 
             insightsContainer.innerHTML = `
                 <div class="insight-item"><span class="insight-label">Office Days (8+ hrs)</span><span class="insight-value ${officeDays8Plus >= requiredOfficeDays ? 'success' : 'warning'}">${officeDays8Plus}/${requiredOfficeDays}</span></div>
