@@ -44,19 +44,59 @@
             --shadow-nav: 0 -2px 5px rgba(0, 0, 0, 0.05);
         }
 
-        /* Dark Mode Overrides */
-        :root.dark-mode {
+        /* 2. DARK MODE OVERRIDE */
+        /* Follows system preference if no explicit choice is made */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-primary: #4bb4c2;
+                --color-primary-light: #6dd2e0;
+                --color-primary-dark: #1a6d77;
+                --color-secondary: #ffc107;
+                --color-background: #121212;
+                --color-surface: #1e1e1e;
+                --color-text: #fcfcf9;
+                --color-text-secondary: #aaaaaa;
+                --color-border: #333333;
+            }
+        }
+
+        /* Explicit dark mode class (overrides system preference) */
+        body.dark-mode {
             --color-primary: #4bb4c2;
-            --color-primary-light: #6cd5e2;
-            --color-primary-dark: #21808d;
+            --color-primary-light: #6dd2e0;
+            --color-primary-dark: #1a6d77;
+            --color-secondary: #ffc107;
             --color-background: #121212;
             --color-surface: #1e1e1e;
-            --color-text: #ffffff;
+            --color-text: #fcfcf9;
             --color-text-secondary: #aaaaaa;
             --color-border: #333333;
-            --shadow-base: 0 4px 8px rgba(0, 0, 0, 0.3);
-            --shadow-nav: 0 -2px 5px rgba(0, 0, 0, 0.3);
         }
+
+        /* Explicit light mode class (overrides system preference) */
+        body.light-mode {
+            --color-background: #fcfcf9;
+            --color-surface: #ffffff;
+            --color-text: #1a1a1a;
+            --color-text-secondary: #555555;
+            --color-border: #dddddd;
+        }
+
+        /* 🌙 Theme Switch Styling */
+        .theme-switch {
+            position: absolute; /* Anchored to header (which has position: relative) */
+            top: 50%; /* Center vertically in header */
+            right: var(--space-16); /* Align with padding */
+            transform: translateY(-50%); /* Adjust for perfect center */
+            cursor: pointer;
+            font-size: 1.5em;
+            color: var(--color-surface); /* Use the header's text color */
+            background: none;
+            border: none;
+            padding: 0;
+            line-height: 1;
+        }
+
 
         /* Base Styles */
         body {
@@ -66,7 +106,6 @@
             background-color: var(--color-background);
             color: var(--color-text);
             line-height: 1.6;
-            transition: background-color 0.3s, color 0.3s;
         }
 
         .container {
@@ -76,59 +115,32 @@
             padding-bottom: 80px;
         }
 
-        /* Header (MODIFIED) */
+        /* Header */
         header {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: var(--space-16) 0;
+            /* FIX 1: Left align content */
+            text-align: left;
+            /* FIX 2: Add horizontal padding to align with container below */
+            padding: var(--space-24) var(--space-16);
             background: var(--color-primary);
             color: var(--color-surface);
             margin-bottom: var(--space-16);
             border-bottom-left-radius: var(--radius-base);
             border-bottom-right-radius: var(--radius-base);
+            /* FIX 3: Add position: relative to anchor any absolute child elements (like the theme toggle) */
+            position: relative;
         }
 
         header h1 {
             margin: 0;
             font-size: var(--font-size-lg);
-            color: var(--color-surface);
         }
 
         #current-date {
             font-size: var(--font-size-base);
-            opacity: 0.9;
+            opacity: 0.8;
             margin-top: var(--space-8);
-            color: var(--color-surface);
-        }
-        
-        /* Theme Toggle Button (NEW) */
-        #theme-toggle {
-            position: absolute;
-            right: var(--space-16);
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: 1px solid var(--color-surface);
-            color: var(--color-surface);
-            padding: 0;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            font-size: var(--font-size-lg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.2s, color 0.3s, border-color 0.3s;
         }
 
-        #theme-toggle:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        
         /* Tabs */
         .tab-content {
             display: none;
@@ -146,7 +158,6 @@
             border-radius: var(--radius-base);
             box-shadow: var(--shadow-base);
             margin-bottom: var(--space-24);
-            transition: background-color 0.3s, box-shadow 0.3s;
         }
 
         .card h2,
@@ -156,10 +167,9 @@
             padding-bottom: var(--space-12);
             margin-bottom: var(--space-16);
             color: var(--color-primary-dark);
-            transition: color 0.3s, border-color 0.3s;
         }
 
-        /* Buttons (No major changes needed, uses variables) */
+        /* Buttons */
         .btn {
             display: block;
             width: 100%;
@@ -183,13 +193,6 @@
             background-color: var(--color-border);
             color: var(--color-text-secondary);
         }
-        
-        .btn-secondary:hover {
-            /* Dark mode adjustment for hover */
-            background-color: var(--color-border); 
-            filter: brightness(0.9);
-        }
-
 
         .btn-danger {
             background-color: var(--color-warning);
@@ -203,6 +206,10 @@
 
         .btn-primary:hover {
             background-color: var(--color-primary-dark);
+        }
+
+        .btn-secondary:hover {
+            background-color: #cacaca;
         }
 
         /* Mode Selection (FIXED FOR RESPONSIVE TWO-ROW LAYOUT) */
@@ -239,8 +246,8 @@
         /* Active state adjustment */
         #mode-selection .btn.active {
             border-color: var(--color-primary);
-            background-color: var(--color-primary-light);
-            color: var(--color-surface);
+            background-color: #e0f7fa;
+            /* Light teal background */
         }
 
         /* END Mode Selection FIX */
@@ -272,7 +279,6 @@
             margin-top: var(--space-24);
             padding: var(--space-16) 0;
             border-top: 1px solid var(--color-border);
-            transition: border-color 0.3s;
         }
 
         .time-box {
@@ -302,13 +308,6 @@
             border: 1px solid #faebcc;
             font-size: var(--font-size-base);
         }
-        
-        /* Dark mode specific warning color */
-        :root.dark-mode .warning-msg {
-            background-color: #3f3f33; 
-            color: #ffd790;
-            border: 1px solid #4a4a40;
-        }
 
         /* Form Styling */
         .form-group {
@@ -324,7 +323,9 @@
 
         .form-input {
             width: 100%;
+            /* FIX: Ensures the input/select takes up the full width */
             padding: var(--space-12);
+            /* FIX: Ensures padding/height is sufficient for select element */
             border: 1px solid var(--color-border);
             border-radius: var(--radius-base);
             font-size: var(--font-size-base);
@@ -332,12 +333,6 @@
             background: var(--color-background);
             color: var(--color-text);
             box-sizing: border-box;
-            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-        }
-
-        /* Specific styling for datetime-local in modal for better UI */
-        #edit-day-modal .form-input[type="datetime-local"] {
-            padding: var(--space-10) var(--space-12);
         }
 
 
@@ -362,7 +357,6 @@
             justify-content: space-around;
             padding: var(--space-8) 0;
             z-index: 1000;
-            transition: background-color 0.3s, box-shadow 0.3s;
         }
 
         .nav-item {
@@ -401,7 +395,7 @@
             cursor: pointer;
             color: var(--color-text);
             font-weight: 600;
-            transition: background-color 0.2s, border-color 0.3s, color 0.3s;
+            transition: background-color 0.2s;
         }
 
         .week-nav button:hover {
@@ -433,7 +427,6 @@
             padding: var(--space-16);
             border: 1px solid var(--color-border);
             border-radius: var(--radius-base);
-            transition: border-color 0.3s;
         }
 
         .insight-item {
@@ -451,7 +444,6 @@
             font-size: var(--font-size-lg);
             font-weight: bold;
             margin-top: 4px;
-            color: var(--color-text);
         }
 
         .insight-value.success {
@@ -477,14 +469,8 @@
             border-radius: var(--radius-base);
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             cursor: pointer;
-            transition: transform 0.1s, background-color 0.3s, box-shadow 0.3s;
+            transition: transform 0.1s;
         }
-        
-        /* Dark mode adjustment for day log box shadow */
-        :root.dark-mode .day-log {
-            box-shadow: 0 1px 3px rgba(255, 255, 255, 0.05);
-        }
-
 
         .day-log:active {
             transform: scale(0.98);
@@ -519,11 +505,6 @@
             color: #795548;
             border-radius: 4px;
         }
-        
-        :root.dark-mode .wfh-badge {
-            background-color: #5d5d4d;
-            color: #c7c7a5;
-        }
 
         .holiday-badge {
             font-weight: 600;
@@ -533,11 +514,6 @@
             color: #e65100;
             border-radius: 4px;
         }
-        
-        :root.dark-mode .holiday-badge {
-            background-color: #6d4b2e;
-            color: #ffcc80;
-        }
 
         /* Modal Styles (Edit Day) */
         .modal {
@@ -546,7 +522,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.5);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -560,21 +536,13 @@
             width: 90%;
             max-width: 400px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s, color 0.3s;
         }
-        
-        :root.dark-mode .modal-content {
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-        }
-
 
         .modal-content h3 {
             margin-top: 0;
             border-bottom: 1px solid var(--color-border);
             padding-bottom: var(--space-12);
             margin-bottom: var(--space-16);
-            color: var(--color-text);
-            transition: border-color 0.3s, color 0.3s;
         }
 
         .modal-actions {
@@ -606,12 +574,10 @@
 
 <body>
     <header>
-        <div id="header-content-wrapper">
-            <h1>Office Time Tracker</h1>
-            <div id="current-date"></div>
-        </div>
-        <button id="theme-toggle" title="Toggle Dark/Light Mode">
-            <i class="fas fa-moon"></i>
+        <h1>Office Time Tracker</h1>
+        <div id="current-date"></div>
+        <button id="theme-toggle" class="theme-switch" aria-label="Toggle light and dark themes">
+            <span id="theme-icon"></span>
         </button>
     </header>
 
@@ -760,12 +726,12 @@
 
             <div id="edit-office-times">
                 <div class="form-group">
-                    <label for="edit-day-login-input" class="form-label">Login Time (Date & Time)</label>
-                    <input type="datetime-local" id="edit-day-login-input" class="form-input">
+                    <label for="edit-day-login-input" class="form-label">Login Time</label>
+                    <input type="time" id="edit-day-login-input" class="form-input">
                 </div>
                 <div class="form-group">
-                    <label for="edit-day-logout-input" class="form-label">Logout Time (Date & Time)</label>
-                    <input type="datetime-local" id="edit-day-logout-input" class="form-input">
+                    <label for="edit-day-logout-input" class="form-label">Logout Time</label>
+                    <input type="time" id="edit-day-logout-input" class="form-input">
                 </div>
             </div>
 
@@ -779,7 +745,7 @@
 
     <script>
         // ========== APP VERSION (INCREMENT ON EVERY DEPLOY) ==========
-        const APP_VERSION = 'v1.0.6';
+        const APP_VERSION = 'v1.0.9-theme-fix';
         console.log('App Version:', APP_VERSION);
 
         // =================================================================
@@ -793,7 +759,6 @@
             let appData = { logs: {} };
 
             // DOM Element Cache
-            // A key part of modernization: caching DOM references once for performance and clean code.
             const DOM = {
                 todayTab: document.getElementById('today-tab'),
                 analyticsTab: document.getElementById('analytics-tab'),
@@ -825,7 +790,6 @@
                 editOfficeTimes: document.getElementById('edit-office-times'),
                 editDayLoginInput: document.getElementById('edit-day-login-input'),
                 editDayLogoutInput: document.getElementById('edit-day-logout-input'),
-                themeToggle: document.getElementById('theme-toggle'), // NEW
                 // Buttons
                 wfhBtn: document.getElementById('wfh-btn'),
                 officeBtn: document.getElementById('office-btn'),
@@ -901,46 +865,6 @@
                 });
             };
 
-            // =================================================================
-            // THEME LOGIC (NEW SECTION)
-            // =================================================================
-            const toggleTheme = () => {
-                const isDarkMode = document.documentElement.classList.toggle('dark-mode');
-                if (isDarkMode) {
-                    localStorage.setItem('theme', 'dark');
-                    DOM.themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-                } else {
-                    localStorage.setItem('theme', 'light');
-                    DOM.themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-                }
-                document.querySelector('meta[name="theme-color"]').setAttribute('content', isDarkMode ? '#1e1e1e' : '#21808d');
-            };
-
-            const initializeTheme = () => {
-                const savedTheme = localStorage.getItem('theme');
-                if (savedTheme === 'dark') {
-                    document.documentElement.classList.add('dark-mode');
-                    DOM.themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-                    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#1e1e1e');
-                } else if (savedTheme === 'light') {
-                    document.documentElement.classList.remove('dark-mode');
-                    DOM.themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-                    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#21808d');
-                } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    // Default to system preference if no saved theme
-                    document.documentElement.classList.add('dark-mode');
-                    DOM.themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-                    localStorage.setItem('theme', 'dark');
-                    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#1e1e1e');
-                } else {
-                    // Default to light
-                    document.documentElement.classList.remove('dark-mode');
-                    DOM.themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-                    localStorage.setItem('theme', 'light');
-                    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#21808d');
-                }
-            };
-            
             // =================================================================
             // NOTIFICATION FUNCTIONS (Simplified for inline inclusion)
             // =================================================================
@@ -1372,9 +1296,17 @@
                         dayHours.textContent = hoursText;
                     }
 
-                    if (log && log.mode !== 'holiday') {
+                    if (log && log.mode !== 'holiday' && log.mode !== 'wfh' && log.mode !== 'office') {
                         dayHours.className = hoursClass;
                         dayHours.style.color = hoursStyle;
+                    }
+
+
+                    // FIX: Ensure that for days with no log, the default class and style are applied.
+                    if (!log) {
+                        dayHours.className = 'day-hours';
+                        dayHours.style.color = 'var(--color-text-secondary)';
+                        dayHours.textContent = hoursText;
                     }
 
 
@@ -1442,13 +1374,22 @@
                 // Hide the office times inputs by default
                 DOM.editOfficeTimes.classList.add('hidden');
 
+                // Helper function to extract HH:MM string from timestamp
+                const getTimeStringFromTimestamp = (timestamp) => {
+                    if (!timestamp) return '';
+                    const d = new Date(timestamp);
+                    // Use padStart for HH:MM format
+                    const hours = String(d.getHours()).padStart(2, '0');
+                    const minutes = String(d.getMinutes()).padStart(2, '0');
+                    return `${hours}:${minutes}`;
+                };
+
                 if (log) {
                     DOM.editModeSelect.value = log.mode;
                     if (log.mode === 'office' && log.loginTime) {
-                        // Use ISO string format for datetime-local
-                        // The time zone offset is subtracted to ensure the local time is displayed correctly in the input field
-                        DOM.editDayLoginInput.value = new Date(log.loginTime - (new Date().getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
-                        DOM.editDayLogoutInput.value = log.logoutTime ? new Date(log.logoutTime - (new Date().getTimezoneOffset() * 60000)).toISOString().slice(0, 16) : '';
+                        // FIX: Set value using only time string
+                        DOM.editDayLoginInput.value = getTimeStringFromTimestamp(log.loginTime);
+                        DOM.editDayLogoutInput.value = getTimeStringFromTimestamp(log.logoutTime);
                         DOM.editOfficeTimes.classList.remove('hidden');
                     } else {
                         DOM.editDayLoginInput.value = '';
@@ -1471,7 +1412,7 @@
             const saveDayEdit = () => {
                 if (!editingDayKey) return;
                 const mode = DOM.editModeSelect.value;
-                const dateOnly = editingDayKey;
+                const dateOnly = editingDayKey; // e.g., '2025-11-24'
 
                 if (mode === 'wfh') {
                     appData.logs[editingDayKey] = { mode: 'wfh' };
@@ -1481,17 +1422,24 @@
 
                     appData.logs[editingDayKey] = { mode: 'holiday', loginTime: loginDate.getTime(), logoutTime: logoutDate.getTime() };
                 } else if (mode === 'office') {
-                    const loginInput = DOM.editDayLoginInput.value;
-                    const logoutInput = DOM.editDayLogoutInput.value;
+                    const loginInput = DOM.editDayLoginInput.value; // e.g., '09:30'
+                    const logoutInput = DOM.editDayLogoutInput.value; // e.g., '18:00'
 
                     if (!loginInput) {
                         alert('Please enter a login time for office mode');
                         return;
                     }
 
-                    // Convert datetime-local input (which is in local time) to timestamp
-                    const loginTime = new Date(loginInput).getTime();
-                    const logoutTime = logoutInput ? new Date(logoutInput).getTime() : null;
+                    // FIX: Helper to combine the date key with the time input (HH:MM) to create a full local timestamp
+                    const createTimestampFromTimeInput = (timeInput) => {
+                        if (!timeInput) return null;
+                        // Combines the '2025-11-24' with 'T09:30' to get a full local date/time string
+                        const timestamp = new Date(`${dateOnly}T${timeInput}`).getTime();
+                        return isNaN(timestamp) ? null : timestamp;
+                    };
+
+                    const loginTime = createTimestampFromTimeInput(loginInput);
+                    const logoutTime = createTimestampFromTimeInput(logoutInput);
                     const now = Date.now();
 
                     if (loginTime > now || (logoutTime && logoutTime > now)) {
@@ -1530,6 +1478,53 @@
             };
 
             // =================================================================
+            // THEME TOGGLE LOGIC (Re-added)
+            // =================================================================
+            const setupThemeToggle = () => {
+                const body = document.body;
+                const toggleButton = document.getElementById('theme-toggle');
+                const iconSpan = document.getElementById('theme-icon');
+                const THEME_KEY = 'app-theme';
+
+                // Function to apply the theme
+                const applyTheme = (theme) => {
+                    body.classList.remove('light-mode', 'dark-mode');
+                    let currentTheme;
+
+                    if (theme === 'dark') {
+                        body.classList.add('dark-mode');
+                        iconSpan.textContent = '☀️'; // Sun icon for dark mode
+                        currentTheme = 'dark';
+                    } else if (theme === 'light') {
+                        body.classList.add('light-mode');
+                        iconSpan.textContent = '🌙'; // Moon icon for light mode
+                        currentTheme = 'light';
+                    } else {
+                        // Check system preference if no saved theme
+                        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                        currentTheme = prefersDark ? 'dark' : 'light';
+                        iconSpan.textContent = prefersDark ? '☀️' : '🌙';
+                    }
+                    return currentTheme;
+                };
+
+                // Load saved theme on initialization
+                const savedTheme = localStorage.getItem(THEME_KEY);
+                applyTheme(savedTheme);
+
+                // Handle button click
+                toggleButton.addEventListener('click', () => {
+                    // Determine the current state based on applied class or system preference
+                    const isDark = body.classList.contains('dark-mode');
+                    const newTheme = isDark ? 'light' : 'dark';
+
+                    // Apply new theme and save preference
+                    applyTheme(newTheme);
+                    localStorage.setItem(THEME_KEY, newTheme);
+                });
+            };
+
+            // =================================================================
             // EVENT LISTENERS
             // =================================================================
             const setupEventListeners = () => {
@@ -1540,10 +1535,6 @@
                 DOM.recordLogoutBtn.addEventListener('click', recordLogout);
                 DOM.saveCustomTimesBtn.addEventListener('click', saveCustomTimes);
                 DOM.resetDayBtn.addEventListener('click', resetDay);
-                
-                // NEW: Theme Toggle Listener
-                DOM.themeToggle.addEventListener('click', toggleTheme);
-
 
                 // Back/Uncheck Buttons
                 DOM.uncheckHolidayBtn.addEventListener('click', () => {
@@ -1603,10 +1594,10 @@
             const initApp = () => {
                 setupServiceWorker();
                 loadData();
-                initializeTheme(); // NEW: Initialize theme before checking today's log
                 updateCurrentDate();
                 checkTodayLog();
                 setupEventListeners();
+                setupThemeToggle(); // Re-initialized theme toggle
 
                 // Request notification permission after a delay
                 setTimeout(() => {
