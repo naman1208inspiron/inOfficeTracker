@@ -14,7 +14,7 @@
     <link rel="apple-touch-icon" href="/icon-192.png">
 
     <style>
-        /* CSS Variables */
+        /* CSS Variables (Light Mode Default) */
         :root {
             --color-primary: #21808d;
             --color-primary-light: #4bb4c2;
@@ -44,59 +44,21 @@
             --shadow-nav: 0 -2px 5px rgba(0, 0, 0, 0.05);
         }
 
-        /* 2. DARK MODE OVERRIDE */
-        /* Follows system preference if no explicit choice is made */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --color-primary: #4bb4c2;
-                --color-primary-light: #6dd2e0;
-                --color-primary-dark: #1a6d77;
-                --color-secondary: #ffc107;
-                --color-background: #121212;
-                --color-surface: #1e1e1e;
-                --color-text: #fcfcf9;
-                --color-text-secondary: #aaaaaa;
-                --color-border: #333333;
-            }
-        }
-
-        /* Explicit dark mode class (overrides system preference) */
-        body.dark-mode {
-            --color-primary: #4bb4c2;
-            --color-primary-light: #6dd2e0;
-            --color-primary-dark: #1a6d77;
-            --color-secondary: #ffc107;
+        /* DARK MODE VARIABLES */
+        .dark-mode {
+            --color-primary: #5bc0de;
+            --color-primary-light: #8cd9e6;
+            --color-primary-dark: #2a6496;
             --color-background: #121212;
             --color-surface: #1e1e1e;
-            --color-text: #fcfcf9;
+            --color-text: #ffffff;
             --color-text-secondary: #aaaaaa;
             --color-border: #333333;
+            --color-warning: #ff6347;
+            --color-success: #4caf50;
+            --shadow-base: 0 4px 10px rgba(0, 0, 0, 0.3);
+            --shadow-nav: 0 -2px 8px rgba(0, 0, 0, 0.3);
         }
-
-        /* Explicit light mode class (overrides system preference) */
-        body.light-mode {
-            --color-background: #fcfcf9;
-            --color-surface: #ffffff;
-            --color-text: #1a1a1a;
-            --color-text-secondary: #555555;
-            --color-border: #dddddd;
-        }
-
-        /* 🌙 Theme Switch Styling */
-        .theme-switch {
-            position: absolute; /* Anchored to header (which has position: relative) */
-            top: 50%; /* Center vertically in header */
-            right: var(--space-16); /* Align with padding */
-            transform: translateY(-50%); /* Adjust for perfect center */
-            cursor: pointer;
-            font-size: 1.5em;
-            color: var(--color-surface); /* Use the header's text color */
-            background: none;
-            border: none;
-            padding: 0;
-            line-height: 1;
-        }
-
 
         /* Base Styles */
         body {
@@ -106,27 +68,33 @@
             background-color: var(--color-background);
             color: var(--color-text);
             line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Dark Mode overrides for specific elements (if needed) */
+        .dark-mode .card {
+            border: 1px solid var(--color-border);
         }
 
         .container {
             max-width: 600px;
             margin: 0 auto;
-            padding: var(--space-16);
+            /* Fix 1a: Remove top padding to close gap with header, keep side padding */
+            padding: 0 var(--space-16);
             padding-bottom: 80px;
         }
 
-        /* Header */
+        /* Header (FIX 1: Reduced padding and margin-bottom) */
         header {
-            /* FIX 1: Left align content */
-            text-align: left;
-            /* FIX 2: Add horizontal padding to align with container below */
-            padding: var(--space-24) var(--space-16);
+            text-align: center;
+            padding: var(--space-16) 0;
+            /* Reduced from 24px */
             background: var(--color-primary);
             color: var(--color-surface);
-            margin-bottom: var(--space-16);
+            /* Fix 1b: Remove margin-bottom to close gap with container */
+            margin-bottom: 0;
             border-bottom-left-radius: var(--radius-base);
             border-bottom-right-radius: var(--radius-base);
-            /* FIX 3: Add position: relative to anchor any absolute child elements (like the theme toggle) */
             position: relative;
         }
 
@@ -141,9 +109,30 @@
             margin-top: var(--space-8);
         }
 
+        /* Theme Toggle Button */
+        #theme-toggle {
+            position: absolute;
+            top: 50%;
+            right: var(--space-16);
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--color-surface);
+            font-size: var(--font-size-lg);
+            cursor: pointer;
+            padding: var(--space-8);
+            line-height: 1;
+            transition: color 0.2s;
+        }
+
+        #theme-toggle:hover {
+            color: var(--color-secondary);
+        }
+
         /* Tabs */
         .tab-content {
             display: none;
+            /* Reduced vertical padding here as well for overall mobile tightness */
             padding: var(--space-16) 0;
         }
 
@@ -154,10 +143,12 @@
         /* Card/Sections */
         .card {
             background-color: var(--color-surface);
-            padding: var(--space-24);
+            /* FIX 5: Reduced padding from 24px to 16px to tighten card spacing on mobile */
+            padding: var(--space-16);
             border-radius: var(--radius-base);
             box-shadow: var(--shadow-base);
             margin-bottom: var(--space-24);
+            transition: background-color 0.3s, box-shadow 0.3s;
         }
 
         .card h2,
@@ -165,7 +156,8 @@
             margin-top: 0;
             border-bottom: 1px solid var(--color-border);
             padding-bottom: var(--space-12);
-            margin-bottom: var(--space-16);
+            /* Fix 2: Reduced margin-bottom for a tighter look on mobile */
+            margin-bottom: var(--space-8);
             color: var(--color-primary-dark);
         }
 
@@ -194,6 +186,22 @@
             color: var(--color-text-secondary);
         }
 
+        /* Dark Mode Specific Button Adjustments */
+        .dark-mode .btn-secondary {
+            background-color: var(--color-border);
+            color: var(--color-text);
+        }
+
+        .btn-secondary.active-mode {
+            background-color: var(--color-primary-light);
+            border: 2px solid var(--color-primary);
+        }
+
+        .dark-mode .btn-secondary.active-mode {
+            background-color: var(--color-primary-dark);
+            border-color: var(--color-primary);
+        }
+
         .btn-danger {
             background-color: var(--color-warning);
             color: var(--color-surface);
@@ -209,49 +217,42 @@
         }
 
         .btn-secondary:hover {
-            background-color: #cacaca;
+            background-color: var(--color-border);
+            filter: brightness(1.2);
+            /* Lighten a bit on hover in dark mode */
         }
 
-        /* Mode Selection (FIXED FOR RESPONSIVE TWO-ROW LAYOUT) */
+        /* Mode Selection */
         .mode-options {
             display: flex;
             flex-direction: column;
-            /* Stack rows vertically */
             gap: var(--space-16);
             margin-top: var(--space-24);
         }
 
         .mode-options-row {
             display: flex;
-            /* Horizontal row for Office/WFH */
             gap: var(--space-16);
         }
 
-        /* Base styles for all mode buttons in this section */
         #mode-selection .btn {
             width: 100%;
             margin: 0;
-            /* Override default margin-top from .btn */
             padding: var(--space-24);
             background-color: var(--color-border);
             color: var(--color-text);
             border: 2px solid transparent;
         }
 
-        /* Make Office and WFH share space equally */
         .mode-options-row .btn {
             flex: 1;
         }
 
-        /* Active state adjustment */
         #mode-selection .btn.active {
             border-color: var(--color-primary);
-            background-color: #e0f7fa;
-            /* Light teal background */
+            background-color: var(--color-primary-light);
+            color: var(--color-text);
         }
-
-        /* END Mode Selection FIX */
-
 
         /* Time Display */
         .time-display {
@@ -309,23 +310,32 @@
             font-size: var(--font-size-base);
         }
 
+        .dark-mode .warning-msg {
+            background-color: #58440e;
+            color: #ffd700;
+            border-color: #997e00;
+        }
+
+        .success-msg {
+            background-color: #dff0d8;
+            color: #3c763d;
+            padding: var(--space-12);
+            border-radius: var(--radius-base);
+            margin-top: var(--space-16);
+            border: 1px solid #d6e9c6;
+            font-size: var(--font-size-base);
+        }
+
+        .dark-mode .success-msg {
+            background-color: #0c380c;
+            color: #72ff72;
+            border-color: #388e3c;
+        }
+
         /* Form Styling */
-        .form-group {
-            margin-bottom: var(--space-16);
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: var(--space-8);
-            font-weight: 600;
-            color: var(--color-text-secondary);
-        }
-
         .form-input {
             width: 100%;
-            /* FIX: Ensures the input/select takes up the full width */
             padding: var(--space-12);
-            /* FIX: Ensures padding/height is sufficient for select element */
             border: 1px solid var(--color-border);
             border-radius: var(--radius-base);
             font-size: var(--font-size-base);
@@ -333,16 +343,21 @@
             background: var(--color-background);
             color: var(--color-text);
             box-sizing: border-box;
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
+        .form-group {
+            margin-bottom: var(--space-16);
+        }
 
+        /* Form Styling additions for flex-row utility */
         .flex-row {
             display: flex;
             gap: var(--space-16);
         }
 
         .flex-row .form-group {
-            flex-grow: 1;
+            flex: 1;
         }
 
         /* Navigation Bar */
@@ -357,6 +372,7 @@
             justify-content: space-around;
             padding: var(--space-8) 0;
             z-index: 1000;
+            transition: background-color 0.3s, box-shadow 0.3s;
         }
 
         .nav-item {
@@ -398,12 +414,16 @@
             transition: background-color 0.2s;
         }
 
+        .dark-mode .week-nav button {
+            background-color: var(--color-surface);
+        }
+
         .week-nav button:hover {
             background-color: var(--color-border);
         }
 
+
         .week-nav button.hidden {
-            /* Fix: Use visibility: hidden to keep the span centered when next button is disabled/hidden */
             visibility: hidden;
             pointer-events: none;
             opacity: 0;
@@ -419,31 +439,67 @@
             padding: 0 var(--space-12);
         }
 
+        /* FIX 4: Weekly Insights Styles - Fixed 2x2 Grid */
         .insights {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            /* Explicitly set to 2 columns */
+            grid-template-columns: 1fr 1fr;
             gap: var(--space-16);
-            margin-bottom: var(--space-24);
-            padding: var(--space-16);
-            border: 1px solid var(--color-border);
-            border-radius: var(--radius-base);
+            margin-bottom: var(--space-16);
         }
 
         .insight-item {
-            display: flex;
-            flex-direction: column;
-            text-align: center;
+            background-color: var(--color-background);
+            padding: var(--space-16);
+            border-radius: var(--radius-base);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--color-primary);
+            /* Default border for emphasis */
+            transition: background-color 0.3s;
         }
 
-        .insight-label {
-            font-size: var(--font-size-base);
+        .dark-mode .insight-item {
+            background-color: var(--color-surface);
+        }
+
+        /* FIX 4: Revert insight-status-full to be a standard grid item */
+        .insight-status-full {
+            /* Now a standard cell in the 2x2 grid */
+            grid-column: auto;
+            background-color: var(--color-background);
+            border-left: 4px solid;
+            padding: var(--space-16);
+            display: block;
+            text-align: left;
+        }
+
+        .insight-status-full .insight-label {
+            font-size: 0.85em;
             color: var(--color-text-secondary);
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .insight-status-full .insight-value {
+            font-size: var(--font-size-lg);
+            font-weight: 700;
+        }
+
+        /* End FIX 4 CSS */
+
+        .insight-label {
+            display: block;
+            font-size: 0.85em;
+            color: var(--color-text-secondary);
+            margin-bottom: 4px;
+            font-weight: 500;
         }
 
         .insight-value {
             font-size: var(--font-size-lg);
-            font-weight: bold;
-            margin-top: 4px;
+            font-weight: 700;
+            color: var(--color-text);
         }
 
         .insight-value.success {
@@ -453,6 +509,7 @@
         .insight-value.warning {
             color: var(--color-warning);
         }
+
 
         .daily-logs {
             display: flex;
@@ -469,32 +526,26 @@
             border-radius: var(--radius-base);
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             cursor: pointer;
-            transition: transform 0.1s;
+            transition: transform 0.1s, background-color 0.3s, box-shadow 0.3s;
         }
 
-        .day-log:active {
-            transform: scale(0.98);
+        .day-log:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .day-info {
-            display: flex;
-            flex-direction: column;
+            line-height: 1.2;
         }
 
         .day-name {
             font-weight: 600;
-            font-size: var(--font-size-base);
+            color: var(--color-primary-dark);
         }
 
         .day-date {
-            font-size: 14px;
+            font-size: 0.85em;
             color: var(--color-text-secondary);
-        }
-
-        .day-hours {
-            font-weight: bold;
-            font-size: var(--font-size-lg);
-            color: var(--color-primary);
         }
 
         .wfh-badge {
@@ -506,6 +557,11 @@
             border-radius: 4px;
         }
 
+        .dark-mode .wfh-badge {
+            background-color: #3e442d;
+            color: #cddc39;
+        }
+
         .holiday-badge {
             font-weight: 600;
             font-size: var(--font-size-base);
@@ -515,49 +571,55 @@
             border-radius: 4px;
         }
 
-        /* Modal Styles (Edit Day) */
+        .dark-mode .holiday-badge {
+            background-color: #5e471d;
+            color: #ff9800;
+        }
+
+        /* Modal Styles (Basic for Pop-up) */
         .modal {
             position: fixed;
-            top: 0;
+            z-index: 1001;
             left: 0;
+            top: 0;
             width: 100%;
             height: 100%;
+            overflow: auto;
             background-color: rgba(0, 0, 0, 0.5);
+            /* Black w/ opacity */
             display: flex;
-            justify-content: center;
             align-items: center;
-            z-index: 10000;
+            justify-content: center;
         }
 
         .modal-content {
             background-color: var(--color-surface);
-            padding: var(--space-24);
+            margin: 15% auto;
+            /* 15% from the top and centered */
+            padding: 24px;
             border-radius: var(--radius-base);
             width: 90%;
+            /* Could be more or less, depending on screen size */
             max-width: 400px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--shadow-base);
+            transition: background-color 0.3s;
         }
 
         .modal-content h3 {
             margin-top: 0;
-            border-bottom: 1px solid var(--color-border);
-            padding-bottom: var(--space-12);
-            margin-bottom: var(--space-16);
+            border-bottom: none;
+            padding-bottom: 0;
         }
 
         .modal-actions {
             display: flex;
-            justify-content: space-between;
-            gap: var(--space-12);
+            flex-direction: column;
+            gap: var(--space-8);
             margin-top: var(--space-24);
         }
 
         .modal-actions .btn {
-            width: auto;
-            flex-grow: 1;
             margin-top: 0;
-            font-size: var(--font-size-base);
-            padding: var(--space-12);
         }
 
         /* Utility */
@@ -576,8 +638,8 @@
     <header>
         <h1>Office Time Tracker</h1>
         <div id="current-date"></div>
-        <button id="theme-toggle" class="theme-switch" aria-label="Toggle light and dark themes">
-            <span id="theme-icon"></span>
+        <button id="theme-toggle" aria-label="Toggle dark and light theme">
+            <i class="fas fa-sun"></i>
         </button>
     </header>
 
@@ -607,45 +669,60 @@
                 </div>
 
                 <div id="after-login" class="hidden">
-                    <div class="time-display">
-                        <div class="timer-label">ELAPSED TIME</div>
-                        <div id="elapsed-time-display" class="timer-value">00:00:00</div>
-                    </div>
 
-                    <button id="record-logout-btn" class="btn btn-danger">
-                        <i class="fas fa-sign-out-alt"></i> Record Logout Time (Now)
-                    </button>
+                    <div id="simplified-view">
+                        <div class="time-display" style="margin-bottom: 12px;">
+                            <div class="timer-label">8-HOUR LOGOUT TARGET</div>
+                            <div id="target-logout-time" class="timer-value" style="font-size: 32px;">--:-- --</div>
+                        </div>
+
+                        <div class="time-display" style="margin-bottom: 24px;">
+                            <div class="timer-label">ELAPSED TIME</div>
+                            <div id="elapsed-time-display" class="timer-value">00:00:00</div>
+                        </div>
+
+                        <button id="record-logout-btn" class="btn btn-danger">
+                            <i class="fas fa-sign-out-alt"></i> Record Logout Time (Now)
+                        </button>
+
+                        <button id="show-details-btn" class="btn btn-secondary" style="margin-top: 8px; padding: 12px;">
+                            <i class="fas fa-info-circle"></i> Details
+                        </button>
+                    </div>
 
                     <div id="warning-container" class="text-center"></div>
 
-                    <h3>Update Times (Optional)</h3>
-                    <div class="flex-row">
-                        <div class="form-group">
-                            <label for="edit-login-input" class="form-label">Login</label>
-                            <input type="time" id="edit-login-input" class="form-input">
+                    <div id="detailed-edit-section" class="hidden"
+                        style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--color-border);">
+                        <h3>Update Times (Optional)</h3>
+                        <div class="flex-row">
+                            <div class="form-group">
+                                <label for="edit-login-input" class="form-label">Login</label>
+                                <input type="time" id="edit-login-input" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-logout-input" class="form-label">Logout</label>
+                                <input type="time" id="edit-logout-input" class="form-input">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="edit-logout-input" class="form-label">Logout</label>
-                            <input type="time" id="edit-logout-input" class="form-input">
+                        <div class="time-row" style="border-top: none; padding-top: 0;">
+                            <div class="time-box">
+                                <h4>Logged In</h4>
+                                <p id="login-time-display">-</p>
+                            </div>
+                            <div class="time-box">
+                                <h4>Logged Out</h4>
+                                <p id="logout-time-display">-</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="time-row">
-                        <div class="time-box">
-                            <h4>Logged In</h4>
-                            <p id="login-time-display">-</p>
-                        </div>
-                        <div class="time-box">
-                            <h4>Logged Out</h4>
-                            <p id="logout-time-display">-</p>
-                        </div>
-                    </div>
 
-                    <button id="save-custom-times-btn" class="btn btn-success">
-                        <i class="fas fa-save"></i> Save Custom Times
-                    </button>
-                    <button id="reset-day-btn" class="btn btn-secondary">
-                        <i class="fas fa-eraser"></i> Reset Day Record
-                    </button>
+                        <button id="save-custom-times-btn" class="btn btn-success">
+                            <i class="fas fa-save"></i> Save Custom Times
+                        </button>
+                        <button id="reset-day-btn" class="btn btn-secondary">
+                            <i class="fas fa-eraser"></i> Reset Day Record
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -671,10 +748,13 @@
         </div>
 
         <div id="analytics-tab" class="tab-content">
-            <div class="week-nav">
-                <button id="prev-week" title="Previous Week"><i class="fas fa-chevron-left"></i></button>
-                <span id="week-range"></span>
-                <button id="next-week" title="Next Week"><i class="fas fa-chevron-right"></i></button>
+            <div class="card">
+                <h2>Weekly Logs</h2>
+                <div class="week-nav">
+                    <button id="prev-week" title="Previous Week"><i class="fas fa-chevron-left"></i></button>
+                    <span id="week-range"></span>
+                    <button id="next-week" title="Next Week"><i class="fas fa-chevron-right"></i></button>
+                </div>
             </div>
 
             <div id="future-week-message" class="card hidden text-center">
@@ -712,19 +792,24 @@
     </div>
 
     <div id="edit-day-modal" class="modal hidden">
-        <div class="modal-content">
+        <div class="modal-content" data-current-mode="office">
             <h3>Edit Day: <span id="edit-day-date"></span></h3>
 
-            <div class="form-group">
-                <label for="edit-mode-select" class="form-label">Day Mode</label>
-                <select id="edit-mode-select" class="form-input">
-                    <option value="office">🏢 Office</option>
-                    <option value="wfh">🏡 WFH</option>
-                    <option value="holiday">🏖️ Holiday</option>
-                </select>
+            <div id="edit-mode-selection" style="margin-bottom: 24px;">
+                <p style="font-weight: 600; margin-bottom: 8px; color: var(--color-text);">Select Day Mode:</p>
+                <div class="mode-options-row" style="gap: 8px;">
+                    <button id="edit-office-btn" class="btn btn-secondary"
+                        style="margin-top: 0; padding: 8px 12px; font-size: 14px; flex: 1;">🏢 Office</button>
+                    <button id="edit-wfh-btn" class="btn btn-secondary"
+                        style="margin-top: 0; padding: 8px 12px; font-size: 14px; flex: 1;">🏡 WFH</button>
+                    <button id="edit-holiday-btn" class="btn btn-secondary"
+                        style="margin-top: 0; padding: 8px 12px; font-size: 14px; flex: 1;">🏖️ Holiday</button>
+                </div>
             </div>
 
             <div id="edit-office-times">
+                <p style="font-style: italic; color: var(--color-text-secondary); margin-top: -10px;">Adjust times for
+                    this office day:</p>
                 <div class="form-group">
                     <label for="edit-day-login-input" class="form-label">Login Time</label>
                     <input type="time" id="edit-day-login-input" class="form-input">
@@ -735,9 +820,16 @@
                 </div>
             </div>
 
+            <div id="edit-non-office-info" class="hidden text-center">
+                <i id="non-office-icon" class="fas fa-home"
+                    style="font-size: 32px; color: var(--color-primary); margin-bottom: 10px;"></i>
+                <p id="non-office-message" style="font-weight: 500;"></p>
+            </div>
+
             <div class="modal-actions">
-                <button id="save-day-edit-btn" class="btn btn-success"><i class="fas fa-save"></i> Save</button>
-                <button id="delete-day-btn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</button>
+                <button id="save-day-edit-btn" class="btn btn-success"><i class="fas fa-save"></i> Save Changes</button>
+                <button id="delete-day-btn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Clear Day
+                    Log</button>
                 <button id="cancel-edit-btn" class="btn btn-secondary"><i class="fas fa-times"></i> Cancel</button>
             </div>
         </div>
@@ -745,7 +837,7 @@
 
     <script>
         // ========== APP VERSION (INCREMENT ON EVERY DEPLOY) ==========
-        const APP_VERSION = 'v1.0.9-theme-fix';
+        const APP_VERSION = 'v1.0.18-card-padding-fix';
         console.log('App Version:', APP_VERSION);
 
         // =================================================================
@@ -784,12 +876,26 @@
                 funContent: document.getElementById('fun-content'),
                 weeklyInsights: document.getElementById('weekly-insights'),
                 dailyLogs: document.getElementById('daily-logs'),
+                // NEW: Simplified View elements
+                targetLogoutTime: document.getElementById('target-logout-time'),
+                showDetailsBtn: document.getElementById('show-details-btn'),
+                detailedEditSection: document.getElementById('detailed-edit-section'),
+                // Modal Elements (UPDATED)
                 editDayModal: document.getElementById('edit-day-modal'),
+                editDayModalContent: document.getElementById('edit-day-modal').querySelector('.modal-content'),
                 editDayDate: document.getElementById('edit-day-date'),
-                editModeSelect: document.getElementById('edit-mode-select'),
+                editModeSelection: document.getElementById('edit-mode-selection'),
+                editOfficeBtn: document.getElementById('edit-office-btn'),
+                editWfhBtn: document.getElementById('edit-wfh-btn'),
+                editHolidayBtn: document.getElementById('edit-holiday-btn'),
                 editOfficeTimes: document.getElementById('edit-office-times'),
+                editNonOfficeInfo: document.getElementById('edit-non-office-info'),
+                nonOfficeIcon: document.getElementById('non-office-icon'),
+                nonOfficeMessage: document.getElementById('non-office-message'),
                 editDayLoginInput: document.getElementById('edit-day-login-input'),
                 editDayLogoutInput: document.getElementById('edit-day-logout-input'),
+                // Theme Toggle
+                themeToggle: document.getElementById('theme-toggle'),
                 // Buttons
                 wfhBtn: document.getElementById('wfh-btn'),
                 officeBtn: document.getElementById('office-btn'),
@@ -820,6 +926,43 @@
                 { type: 'quote', text: '🚀 "Don\'t watch the clock; do what it does. Keep going." - Sam Levenson' },
             ];
 
+            // =================================================================
+            // THEME TOGGLE LOGIC
+            // =================================================================
+            const applyTheme = (theme) => {
+                const body = document.body;
+                const icon = DOM.themeToggle.querySelector('i');
+                if (theme === 'dark') {
+                    body.classList.add('dark-mode');
+                    icon.className = 'fas fa-sun'; // Show sun icon in dark mode to switch to light
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    body.classList.remove('dark-mode');
+                    icon.className = 'fas fa-moon'; // Show moon icon in light mode to switch to dark
+                    localStorage.setItem('theme', 'light');
+                }
+            };
+
+            const toggleTheme = () => {
+                const isDarkMode = document.body.classList.contains('dark-mode');
+                applyTheme(isDarkMode ? 'light' : 'dark');
+            };
+
+            const initTheme = () => {
+                // Check local storage or system preference
+                const savedTheme = localStorage.getItem('theme');
+                const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+                if (savedTheme) {
+                    applyTheme(savedTheme);
+                } else if (prefersDark) {
+                    // Default to dark mode if system preference is dark, but set it in storage
+                    applyTheme('dark');
+                } else {
+                    // Default to light mode
+                    applyTheme('light');
+                }
+            };
 
             // =================================================================
             // PWA: SERVICE WORKER WITH AUTO-UPDATE
@@ -829,7 +972,6 @@
 
                 let refreshing = false;
 
-                // Reload page when new service worker takes control
                 navigator.serviceWorker.addEventListener('controllerchange', () => {
                     if (refreshing) return;
                     refreshing = true;
@@ -838,20 +980,15 @@
                 });
 
                 window.addEventListener('load', () => {
-                    // Assuming sw.js is at the root
                     navigator.serviceWorker.register('/sw.js')
                         .then(registration => {
                             console.log('SW registered:', registration);
-
-                            // Check for updates every 60 seconds
                             setInterval(() => registration.update(), 60000);
 
-                            // Listen for waiting service worker
                             registration.addEventListener('updatefound', () => {
                                 const newWorker = registration.installing;
                                 newWorker.addEventListener('statechange', () => {
                                     if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                        // New service worker available
                                         if (confirm('🎉 New version available! Update now?')) {
                                             newWorker.postMessage({ type: 'SKIP_WAITING' });
                                         }
@@ -866,7 +1003,7 @@
             };
 
             // =================================================================
-            // NOTIFICATION FUNCTIONS (Simplified for inline inclusion)
+            // NOTIFICATION FUNCTIONS 
             // =================================================================
             const requestNotificationPermission = async () => {
                 if ('Notification' in window) {
@@ -897,9 +1034,37 @@
             };
 
             // =================================================================
-            // UTILITY/FORMATTING FUNCTIONS (using ES6 arrow functions and const)
+            // UTILITY/FORMATTING FUNCTIONS 
             // =================================================================
-            const getTodayKey = () => new Date().toISOString().split('T')[0];
+
+            const getTodayKey = (date = new Date()) => {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            };
+
+            const showTodayMessage = (message, type = 'success', duration = 3000, callback = null) => {
+                const todayContainer = DOM.warningContainer;
+                const className = type === 'success' ? 'success-msg' : 'warning-msg';
+
+                const tempDiv = document.createElement('div');
+                tempDiv.className = className;
+                tempDiv.textContent = message;
+
+                todayContainer.innerHTML = tempDiv.outerHTML;
+
+                setTimeout(() => {
+                    // Check if the message hasn't been replaced by a newer one before clearing
+                    if (todayContainer.textContent.trim().includes(message.trim())) {
+                        todayContainer.innerHTML = '';
+                    }
+
+                    if (callback && typeof callback === 'function') {
+                        callback();
+                    }
+                }, duration);
+            };
 
             const formatDate = (date) => date.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
@@ -919,11 +1084,37 @@
             };
 
             const calculateElapsedTime = (loginTime, logoutTime) => {
-                // If logoutTime is null, use current time
                 return Math.floor(((logoutTime || Date.now()) - loginTime) / 1000);
             };
 
             const getRandomFunMessage = () => funMessages[Math.floor(Math.random() * funMessages.length)];
+
+            /**
+             * Converts a timestamp to a "HH:MM" string for time input.
+             * @param {number | null} timestamp 
+             * @returns {string} HH:MM string or empty string.
+             */
+            const timestampToTimeInput = (timestamp) => {
+                if (!timestamp) return '';
+                const date = new Date(timestamp);
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                return `${hours}:${minutes}`;
+            };
+
+            /**
+             * Combines a date key ("YYYY-MM-DD") and a time string ("HH:MM") into a timestamp.
+             * @param {string} dateKey YYYY-MM-DD
+             * @param {string} timeString HH:MM
+             * @returns {number | null} Timestamp or null if timeString is invalid.
+             */
+            const createTimestampFromTimeInput = (dateKey, timeString) => {
+                if (!timeString) return null;
+                const date = new Date(dateKey);
+                const [hours, minutes] = timeString.split(':').map(Number);
+                date.setHours(hours, minutes, 0, 0);
+                return date.getTime();
+            };
 
             // =================================================================
             // DATA MANAGEMENT
@@ -952,6 +1143,29 @@
                 DOM.currentDateDisplay.textContent = formatDate(new Date());
             };
 
+            // This function is now mainly for post-logout persistent warning (if needed)
+            const checkAndDisplayPersistentWarning = () => {
+                const todayKey = getTodayKey();
+                const todayLog = appData.logs[todayKey];
+                const warningContainer = DOM.warningContainer;
+
+                // Clear container first if the warning function is called outside of an immediate message
+                if (warningContainer.innerHTML !== '') {
+                    warningContainer.innerHTML = '';
+                }
+
+                if (todayLog && todayLog.mode === 'office' && todayLog.logoutTime) {
+                    const elapsed = calculateElapsedTime(todayLog.loginTime, todayLog.logoutTime);
+                    const hours = elapsed / 3600;
+
+                    // Only show the persistent warning if the current message container is empty
+                    if (hours < 8 && warningContainer.innerHTML === '') {
+                        warningContainer.innerHTML = `<div class="warning-msg">⚠️ Total time is ${formatHoursMinutes(elapsed)} - less than 8 hours. You can use 'Details' to edit the logout time.</div>`;
+                    }
+                }
+            };
+
+
             const checkEightHoursNotification = (elapsed, todayKey) => {
                 if (elapsed >= 8 * 3600) {
                     const storedNotified = localStorage.getItem('notified_8hrs_' + todayKey);
@@ -975,13 +1189,10 @@
                     DOM.elapsedTimeDisplay.textContent = formatTime(elapsed);
                     checkEightHoursNotification(elapsed, todayKey);
 
-                    if (todayLog.logoutTime) {
-                        const hours = elapsed / 3600;
-                        DOM.warningContainer.innerHTML = hours < 8 ?
-                            `<div class="warning-msg">⚠️ Total time is ${formatHoursMinutes(elapsed)} - less than 8 hours. You can record a new logout time.</div>` : '';
-                    } else {
-                        DOM.warningContainer.innerHTML = '';
-                    }
+                    // --- NEW LOGIC FOR TARGET LOGOUT TIME ---
+                    const targetTimeMs = todayLog.loginTime + (8 * 3600 * 1000);
+                    DOM.targetLogoutTime.textContent = formatTimeDisplay(targetTimeMs);
+                    // ----------------------------------------
                 }
             };
 
@@ -1004,17 +1215,21 @@
 
                 DOM.beforeLogin.classList.add('hidden');
                 DOM.afterLogin.classList.remove('hidden');
+
+                // Update detailed view inputs/displays
                 DOM.loginTimeDisplay.textContent = formatTimeDisplay(now);
                 DOM.logoutTimeDisplay.textContent = 'Not recorded';
-
-                const nowDate = new Date(now);
-                const hours = String(nowDate.getHours()).padStart(2, '0');
-                const minutes = String(nowDate.getMinutes()).padStart(2, '0');
-                DOM.editLoginInput.value = `${hours}:${minutes}`;
+                DOM.editLoginInput.value = timestampToTimeInput(now);
                 DOM.editLogoutInput.value = '';
+
+                // Ensure detailed section is hidden on fresh login
+                DOM.detailedEditSection.classList.add('hidden');
+                DOM.showDetailsBtn.innerHTML = '<i class="fas fa-info-circle"></i> Details';
 
                 updateElapsedTimeDisplay();
                 updateTimerInterval();
+
+                showTodayMessage('✅ Login time recorded successfully!', 'success');
             };
 
             const recordLogout = () => {
@@ -1027,13 +1242,24 @@
                     saveData();
 
                     DOM.logoutTimeDisplay.textContent = formatTimeDisplay(now);
-                    const logoutDate = new Date(now);
-                    const hours = String(logoutDate.getHours()).padStart(2, '0');
-                    const minutes = String(logoutDate.getMinutes()).padStart(2, '0');
-                    DOM.editLogoutInput.value = `${hours}:${minutes}`;
+                    DOM.editLogoutInput.value = timestampToTimeInput(now);
+
+                    const elapsed = calculateElapsedTime(todayLog.loginTime, todayLog.logoutTime);
 
                     updateElapsedTimeDisplay();
                     updateTimerInterval();
+
+                    // --- CUSTOM WARNING LOGIC (No Browser Pop-up) ---
+                    if (elapsed < 8 * 3600) {
+                        showTodayMessage(
+                            `⚠️ Total time is ${formatHoursMinutes(elapsed)} - less than 8 hours. Use 'Details' to adjust or record a later logout.`,
+                            'warning',
+                            5000
+                        );
+                    } else {
+                        showTodayMessage('✅ Logout time recorded successfully!', 'success', 3000);
+                    }
+                    // --------------------------------------------------
                 }
             };
 
@@ -1046,60 +1272,70 @@
                     const logoutInput = DOM.editLogoutInput.value;
                     const now = Date.now();
 
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
-                    const dayStart = today.getTime();
+                    const newLoginTimestamp = createTimestampFromTimeInput(todayKey, loginInput);
+                    const newLogoutTimestamp = createTimestampFromTimeInput(todayKey, logoutInput);
 
                     let loginTimestamp = todayLog.loginTime;
                     let logoutTimestamp = todayLog.logoutTime;
 
-                    const setTimeFromInput = (input, isLogin) => {
-                        if (!input) return null;
-                        const [hours, minutes] = input.split(':').map(Number);
-                        const date = new Date(dayStart);
-                        date.setHours(hours, minutes, 0, 0);
-                        const timestamp = date.getTime();
+                    // Validation and assignment logic
+                    if (newLoginTimestamp === null && newLogoutTimestamp !== null) {
+                        alert('❌ Cannot set logout time without a login time!');
+                        return;
+                    }
 
-                        if (timestamp > now) {
-                            alert(`❌ ${isLogin ? 'Login' : 'Logout'} time cannot be in the future!`);
-                            return false; // Indicate error
+                    if (newLoginTimestamp !== null) {
+                        if (newLoginTimestamp > now) {
+                            alert('❌ Login time cannot be in the future!');
+                            return;
                         }
-                        return timestamp;
-                    };
+                        loginTimestamp = newLoginTimestamp;
+                    }
 
-                    const newLoginTimestamp = setTimeFromInput(loginInput, true);
-                    if (newLoginTimestamp === false) return;
-                    if (newLoginTimestamp !== null) loginTimestamp = newLoginTimestamp;
-
-                    const newLogoutTimestamp = setTimeFromInput(logoutInput, false);
-                    if (newLogoutTimestamp === false) return;
-                    logoutTimestamp = newLogoutTimestamp;
-
+                    if (newLogoutTimestamp !== null) {
+                        if (newLogoutTimestamp > now) {
+                            alert('❌ Logout time cannot be in the future!');
+                            return;
+                        }
+                        logoutTimestamp = newLogoutTimestamp;
+                    } else {
+                        logoutTimestamp = null; // Cleared
+                    }
 
                     if (loginTimestamp && logoutTimestamp && logoutTimestamp < loginTimestamp) {
                         alert('❌ Logout time cannot be before login time!');
                         return;
                     }
 
-                    if (loginTimestamp) {
-                        todayLog.loginTime = loginTimestamp;
-                        DOM.loginTimeDisplay.textContent = formatTimeDisplay(loginTimestamp);
+                    if (loginTimestamp === null && logoutTimestamp === null) {
+                        // If both are cleared (only possible if user manually cleared inputs)
+                        alert('Cannot save. Reset day if you want to clear the entire record.');
+                        return;
                     }
 
+                    todayLog.loginTime = loginTimestamp;
                     todayLog.logoutTime = logoutTimestamp;
+
+                    DOM.loginTimeDisplay.textContent = loginTimestamp ? formatTimeDisplay(loginTimestamp) : '-';
                     DOM.logoutTimeDisplay.textContent = logoutTimestamp ? formatTimeDisplay(logoutTimestamp) : 'Not recorded';
 
                     saveData();
                     updateElapsedTimeDisplay();
                     updateTimerInterval();
-                    alert('✅ Times updated successfully!');
+
+                    showTodayMessage('✅ Times updated successfully!', 'success', 3000, () => {
+                        // Re-check persistent warning after saving
+                        if (todayLog.mode === 'office' && todayLog.logoutTime) {
+                            checkAndDisplayPersistentWarning();
+                        }
+                    });
                 }
             };
 
             const resetDay = () => {
                 delete appData.logs[getTodayKey()];
                 saveData();
-                updateTimerInterval(); // Clears interval if running
+                updateTimerInterval();
                 showModeSelection();
             };
 
@@ -1108,15 +1344,15 @@
                 DOM.wfhScreen.classList.add('hidden');
                 DOM.officeScreen.classList.add('hidden');
                 DOM.holidayScreen.classList.add('hidden');
-                // Remove active state from mode buttons
                 [DOM.wfhBtn, DOM.officeBtn, DOM.holidayBtn].forEach(btn => btn.classList.remove('active'));
+                DOM.warningContainer.innerHTML = '';
             };
 
             const showWFHScreen = () => {
-                showModeSelection(); // Reset first
+                showModeSelection();
                 DOM.modeSelection.classList.add('hidden');
                 DOM.wfhScreen.classList.remove('hidden');
-                DOM.wfhBtn.classList.add('active'); // Add active style
+                DOM.wfhBtn.classList.add('active');
 
                 const todayKey = getTodayKey();
                 appData.logs[todayKey] = { mode: 'wfh' };
@@ -1124,10 +1360,10 @@
             };
 
             const showOfficeScreen = () => {
-                showModeSelection(); // Reset first
+                showModeSelection();
                 DOM.modeSelection.classList.add('hidden');
                 DOM.officeScreen.classList.remove('hidden');
-                DOM.officeBtn.classList.add('active'); // Add active style
+                DOM.officeBtn.classList.add('active');
 
                 const todayKey = getTodayKey();
                 const todayLog = appData.logs[todayKey];
@@ -1142,21 +1378,19 @@
             };
 
             const showHolidayScreen = () => {
-                showModeSelection(); // Reset first
+                showModeSelection();
                 DOM.modeSelection.classList.add('hidden');
                 DOM.holidayScreen.classList.remove('hidden');
-                DOM.holidayBtn.classList.add('active'); // Add active style
+                DOM.holidayBtn.classList.add('active');
 
                 const todayKey = getTodayKey();
-                // Set holiday time to 8 hours (9 AM to 5 PM today)
                 const date = new Date();
-                date.setHours(0, 0, 0, 0); // Start of day
+                date.setHours(0, 0, 0, 0);
 
-                // Using specific times for logs, though for "holiday" mode only the mode matters for analytics
                 appData.logs[todayKey] = {
                     mode: 'holiday',
-                    loginTime: date.getTime() + (9 * 3600 * 1000), // 9 AM
-                    logoutTime: date.getTime() + (17 * 3600 * 1000) // 5 PM
+                    loginTime: date.getTime() + (9 * 3600 * 1000),
+                    logoutTime: date.getTime() + (17 * 3600 * 1000)
                 };
                 saveData();
             };
@@ -1165,7 +1399,7 @@
                 const todayKey = getTodayKey();
                 const todayLog = appData.logs[todayKey];
 
-                updateTimerInterval(); // Clear existing interval
+                updateTimerInterval();
 
                 if (todayLog) {
                     if (todayLog.mode === 'wfh') {
@@ -1174,23 +1408,22 @@
                         showOfficeScreen();
                         if (todayLog.loginTime) {
                             DOM.loginTimeDisplay.textContent = formatTimeDisplay(todayLog.loginTime);
-                            const loginDate = new Date(todayLog.loginTime);
-                            const loginHours = String(loginDate.getHours()).padStart(2, '0');
-                            const loginMinutes = String(loginDate.getMinutes()).padStart(2, '0');
-                            DOM.editLoginInput.value = `${loginHours}:${loginMinutes}`;
+                            DOM.editLoginInput.value = timestampToTimeInput(todayLog.loginTime);
 
                             if (todayLog.logoutTime) {
                                 DOM.logoutTimeDisplay.textContent = formatTimeDisplay(todayLog.logoutTime);
-                                const logoutDate = new Date(todayLog.logoutTime);
-                                const logoutHours = String(logoutDate.getHours()).padStart(2, '0');
-                                const logoutMinutes = String(logoutDate.getMinutes()).padStart(2, '0');
-                                DOM.editLogoutInput.value = `${logoutHours}:${logoutMinutes}`;
+                                DOM.editLogoutInput.value = timestampToTimeInput(todayLog.logoutTime);
                             } else {
                                 DOM.logoutTimeDisplay.textContent = 'Not recorded';
                                 DOM.editLogoutInput.value = '';
-                                updateTimerInterval(); // Start interval
+                                updateTimerInterval();
                             }
                             updateElapsedTimeDisplay();
+                            checkAndDisplayPersistentWarning();
+                        } else {
+                            // Log exists but somehow loginTime is missing (edge case)
+                            DOM.beforeLogin.classList.remove('hidden');
+                            DOM.afterLogin.classList.add('hidden');
                         }
                     } else if (todayLog.mode === 'holiday') {
                         showHolidayScreen();
@@ -1205,15 +1438,16 @@
             // =================================================================
             const getWeekRange = (offset = 0) => {
                 const today = new Date();
-                const currentDay = today.getDay(); // 0 for Sunday, 1 for Monday
-                const dayAdjustment = (currentDay === 0) ? -6 : 1; // Start week on Monday
+                const currentDay = today.getDay();
+                const dayAdjustment = (currentDay === 0) ? -6 : 1;
 
                 const monday = new Date(today);
                 monday.setDate(today.getDate() - currentDay + dayAdjustment + (offset * 7));
-                monday.setHours(0, 0, 0, 0); // Normalize to start of day
+                monday.setHours(0, 0, 0, 0);
 
                 const sunday = new Date(monday);
                 sunday.setDate(monday.getDate() + 6);
+                sunday.setHours(23, 59, 59, 999);
 
                 return { monday, sunday };
             };
@@ -1237,20 +1471,50 @@
                 return monday > today;
             };
 
-            const updateWeeklyInsights = (officeDays8Plus, wfhDays, holidayDays, dates) => {
+            // FIX 4: Updated to always render Holiday Days and use a 2x2 grid layout
+            const updateWeeklyInsights = (officeDays8Plus, wfhDays, holidayDays) => {
                 const requiredOfficeDays = 3;
                 const maxWfhDays = 2;
-                const remainingOfficeDays = Math.max(0, requiredOfficeDays - officeDays8Plus);
+                // Calculate pure office days (8+ hours), excluding holidays
+                const officeDaysCount = officeDays8Plus - holidayDays;
+                const totalOfficeAndHoliday = officeDays8Plus;
+
+                // For Status, we check against the required total for compliance
+                const remainingOfficeDays = Math.max(0, requiredOfficeDays - totalOfficeAndHoliday);
+                const wfhUsed = wfhDays;
 
                 const statusText = remainingOfficeDays === 0
                     ? '✅ Completed!'
-                    : `${remainingOfficeDays} more WFO needed`;
+                    : `${remainingOfficeDays} WFO needed`;
+
+                const statusClass = remainingOfficeDays === 0 ? 'success' : 'warning';
+                const officeClass = officeDaysCount >= requiredOfficeDays ? 'success' : 'warning';
+                const wfhClass = wfhUsed <= maxWfhDays ? 'success' : 'warning';
+
+                // Keep statusBorderColor for border-left-color of the status item
+                const statusBorderColor = remainingOfficeDays === 0 ? 'var(--color-success)' : 'var(--color-warning)';
+
 
                 DOM.weeklyInsights.innerHTML = `
-                    <div class="insight-item"><span class="insight-label">Office Days (8+ hrs)</span><span class="insight-value ${officeDays8Plus >= requiredOfficeDays ? 'success' : 'warning'}">${officeDays8Plus}/${requiredOfficeDays}</span></div>
-                    <div class="insight-item"><span class="insight-label">WFH Days used</span><span class="insight-value ${wfhDays <= maxWfhDays ? 'success' : 'warning'}">${wfhDays}/${maxWfhDays}</span></div>
-                    ${holidayDays > 0 ? `<div class="insight-item"><span class="insight-label">Holiday Days</span><span class="insight-value">${holidayDays}</span></div>` : ''}
-                    <div class="insight-item"><span class="insight-label">Status</span><span class="insight-value ${remainingOfficeDays === 0 ? 'success' : 'warning'}">${statusText}</span></div>
+                    <div class="insight-item" style="border-left-color: var(--color-primary);">
+                        <span class="insight-label">Office Days (Pure)</span>
+                        <span class="insight-value ${officeClass}">${officeDaysCount}</span>
+                    </div>
+                    
+                    <div class="insight-item" style="border-left-color: var(--color-success);">
+                        <span class="insight-label">WFH Days used</span>
+                        <span class="insight-value ${wfhClass}">${wfhUsed}/${maxWfhDays}</span>
+                    </div>
+                    
+                    <div class="insight-item" style="border-left-color: var(--color-secondary);">
+                        <span class="insight-label">Holiday Days</span>
+                        <span class="insight-value">${holidayDays}</span>
+                    </div>
+                    
+                    <div class="insight-item insight-status-full" style="border-left-color: ${statusBorderColor};">
+                        <span class="insight-label">Weekly Status</span>
+                        <span class="insight-value ${statusClass}">${statusText}</span>
+                    </div>
                 `;
             };
 
@@ -1259,9 +1523,9 @@
 
                 dates.forEach(date => {
                     const dayOfWeek = date.getDay();
-                    if (dayOfWeek === 0 || dayOfWeek === 6) return; // Skip Sat/Sun
+                    if (dayOfWeek === 0 || dayOfWeek === 6) return;
 
-                    const key = date.toISOString().split('T')[0];
+                    const key = getTodayKey(date);
                     const log = appData.logs[key];
 
                     const dayLog = document.createElement('div');
@@ -1270,45 +1534,29 @@
 
                     const dayInfo = document.createElement('div');
                     dayInfo.className = 'day-info';
-                    dayInfo.innerHTML = `<div class="day-name">${date.toLocaleDateString('en-IN', { weekday: 'long' })}</div><div class="day-date">${date.toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' })}</div>`;
+                    dayInfo.innerHTML = `<div class="day-name">${date.toLocaleDateString('en-IN', { weekday: 'long' })}</div><div class="day-date">${date.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' })}</div>`;
 
                     const dayHours = document.createElement('div');
-                    let hoursText = '-';
-                    let hoursClass = 'day-hours';
-                    let hoursStyle = 'var(--color-text-secondary)';
 
                     if (!log) {
-                        // Default to '-'
-                    } else if (log.mode === 'wfh') {
-                        hoursText = 'WFH';
-                        hoursClass = 'wfh-badge';
-                        hoursStyle = '';
-                        dayHours.innerHTML = hoursText;
-                    } else if (log.mode === 'holiday') {
-                        hoursText = '8h 0m';
-                        hoursClass = 'day-hours';
-                        hoursStyle = 'var(--color-primary)';
-                        dayHours.innerHTML = `${hoursText} <span class="holiday-badge" style="margin-left: 8px; font-size: 10px;">🏖️</span>`;
-                    } else if (log.mode === 'office' && log.loginTime) {
-                        hoursText = formatHoursMinutes(calculateElapsedTime(log.loginTime, log.logoutTime));
-                        hoursClass = 'day-hours';
-                        hoursStyle = 'var(--color-primary)';
-                        dayHours.textContent = hoursText;
-                    }
-
-                    if (log && log.mode !== 'holiday' && log.mode !== 'wfh' && log.mode !== 'office') {
-                        dayHours.className = hoursClass;
-                        dayHours.style.color = hoursStyle;
-                    }
-
-
-                    // FIX: Ensure that for days with no log, the default class and style are applied.
-                    if (!log) {
-                        dayHours.className = 'day-hours';
+                        dayHours.textContent = 'Not Logged';
                         dayHours.style.color = 'var(--color-text-secondary)';
-                        dayHours.textContent = hoursText;
+                    } else if (log.mode === 'wfh') {
+                        dayHours.innerHTML = `<span class="wfh-badge">WFH</span>`;
+                    } else if (log.mode === 'holiday') {
+                        dayHours.innerHTML = `8h 0m <span class="holiday-badge" style="margin-left: 8px; font-size: 12px; font-weight: normal;">🏖️ Holiday</span>`;
+                    } else if (log.mode === 'office' && log.loginTime) {
+                        const elapsedSeconds = calculateElapsedTime(log.loginTime, log.logoutTime);
+                        dayHours.textContent = formatHoursMinutes(elapsedSeconds);
+                        if (elapsedSeconds < 8 * 3600) {
+                            dayHours.style.color = 'var(--color-warning)';
+                        } else {
+                            dayHours.style.color = 'var(--color-primary)';
+                        }
+                    } else {
+                        dayHours.textContent = 'Office (No Login)';
+                        dayHours.style.color = 'var(--color-warning)';
                     }
-
 
                     dayLog.appendChild(dayInfo);
                     dayLog.appendChild(dayHours);
@@ -1317,12 +1565,10 @@
             };
 
             const updateAnalytics = () => {
-                // Bug fix: Hide content and navigation only when necessary, but always show the previous week button
                 if (isWeekInFuture(currentWeekOffset)) {
                     DOM.futureWeekMessage.classList.remove('hidden');
                     DOM.analyticsContent.classList.add('hidden');
 
-                    // Hide next button, keep prev button visible
                     DOM.nextWeekBtn.classList.add('hidden');
                     DOM.weekRangeSpan.textContent = 'Future Week';
 
@@ -1335,7 +1581,6 @@
                 DOM.futureWeekMessage.classList.add('hidden');
                 DOM.analyticsContent.classList.remove('hidden');
 
-                // Show next button again
                 DOM.nextWeekBtn.classList.remove('hidden');
 
                 const { monday, sunday } = getWeekRange(currentWeekOffset);
@@ -1345,13 +1590,18 @@
 
                 let officeDays8Plus = 0, wfhDays = 0, holidayDays = 0;
                 dates.forEach(date => {
-                    const key = date.toISOString().split('T')[0];
+                    const key = getTodayKey(date);
                     const log = appData.logs[key];
                     if (log) {
+                        // Only count Mon-Fri for calculations
+                        const dayOfWeek = date.getDay();
+                        if (dayOfWeek === 0 || dayOfWeek === 6) return;
+
                         if (log.mode === 'office' && log.loginTime) {
                             if (calculateElapsedTime(log.loginTime, log.logoutTime) >= 8 * 3600) officeDays8Plus++;
                         } else if (log.mode === 'holiday') {
-                            officeDays8Plus++; // Holiday counts as a full day for the required WFO count
+                            // Holiday is counted as a fulfilled day (8+ hours)
+                            officeDays8Plus++;
                             holidayDays++;
                         } else if (log.mode === 'wfh') {
                             wfhDays++;
@@ -1359,48 +1609,72 @@
                     }
                 });
 
-                updateWeeklyInsights(officeDays8Plus, wfhDays, holidayDays, dates);
+                updateWeeklyInsights(officeDays8Plus, wfhDays, holidayDays);
                 renderDailyLogs(dates);
             };
 
             // =================================================================
-            // EDIT MODAL LOGIC
+            // EDIT MODAL LOGIC (OVERHAUL)
             // =================================================================
+
+            /**
+             * Handles the visual state of the edit modal based on the selected mode.
+             * @param {string} mode 'office', 'wfh', or 'holiday'
+             */
+            const switchEditMode = (mode) => {
+                const isOffice = mode === 'office';
+
+                // 1. Update internal state
+                DOM.editDayModalContent.dataset.currentMode = mode;
+
+                // 2. Button state
+                [DOM.editOfficeBtn, DOM.editWfhBtn, DOM.editHolidayBtn].forEach(btn => btn.classList.remove('active-mode'));
+                if (mode === 'office') DOM.editOfficeBtn.classList.add('active-mode');
+                if (mode === 'wfh') DOM.editWfhBtn.classList.add('active-mode');
+                if (mode === 'holiday') DOM.editHolidayBtn.classList.add('active-mode');
+
+                // 3. Section visibility
+                DOM.editOfficeTimes.classList.toggle('hidden', !isOffice);
+                DOM.editNonOfficeInfo.classList.toggle('hidden', isOffice);
+
+                // 4. Non-office content
+                if (!isOffice) {
+                    let message = '';
+                    let icon = '';
+                    if (mode === 'wfh') {
+                        message = 'This day will be recorded as a Work From Home day.';
+                        icon = 'fas fa-home';
+                    } else if (mode === 'holiday') {
+                        message = 'This day will be recorded as a Holiday (8-hour credit).';
+                        icon = 'fas fa-umbrella-beach';
+                    }
+                    DOM.nonOfficeMessage.textContent = message;
+                    DOM.nonOfficeIcon.className = icon;
+                }
+            };
+
             const openEditDayModal = (key, date) => {
                 editingDayKey = key;
                 const log = appData.logs[key];
+
+                // Get mode, defaulting to 'office' if no log exists for the day
+                const initialMode = log?.mode || 'office';
+
                 DOM.editDayDate.textContent = formatDate(date);
 
-                // Hide the office times inputs by default
-                DOM.editOfficeTimes.classList.add('hidden');
-
-                // Helper function to extract HH:MM string from timestamp
-                const getTimeStringFromTimestamp = (timestamp) => {
-                    if (!timestamp) return '';
-                    const d = new Date(timestamp);
-                    // Use padStart for HH:MM format
-                    const hours = String(d.getHours()).padStart(2, '0');
-                    const minutes = String(d.getMinutes()).padStart(2, '0');
-                    return `${hours}:${minutes}`;
-                };
-
-                if (log) {
-                    DOM.editModeSelect.value = log.mode;
-                    if (log.mode === 'office' && log.loginTime) {
-                        // FIX: Set value using only time string
-                        DOM.editDayLoginInput.value = getTimeStringFromTimestamp(log.loginTime);
-                        DOM.editDayLogoutInput.value = getTimeStringFromTimestamp(log.logoutTime);
-                        DOM.editOfficeTimes.classList.remove('hidden');
-                    } else {
-                        DOM.editDayLoginInput.value = '';
-                        DOM.editDayLogoutInput.value = '';
-                    }
+                // 1. Populate time inputs (only if log is an Office log)
+                if (log && log.mode === 'office') {
+                    DOM.editDayLoginInput.value = timestampToTimeInput(log.loginTime);
+                    DOM.editDayLogoutInput.value = timestampToTimeInput(log.logoutTime);
                 } else {
-                    DOM.editModeSelect.value = 'office';
+                    // Clear inputs for non-office or empty logs
                     DOM.editDayLoginInput.value = '';
                     DOM.editDayLogoutInput.value = '';
-                    DOM.editOfficeTimes.classList.remove('hidden');
                 }
+
+                // 2. Set the modal to the initial mode
+                switchEditMode(initialMode);
+
                 DOM.editDayModal.classList.remove('hidden');
             };
 
@@ -1409,63 +1683,15 @@
                 editingDayKey = null;
             };
 
-            const saveDayEdit = () => {
+            const deleteDay = (withConfirmation = true) => {
                 if (!editingDayKey) return;
-                const mode = DOM.editModeSelect.value;
-                const dateOnly = editingDayKey; // e.g., '2025-11-24'
 
-                if (mode === 'wfh') {
-                    appData.logs[editingDayKey] = { mode: 'wfh' };
-                } else if (mode === 'holiday') {
-                    const loginDate = new Date(`${dateOnly}T09:00:00`); // 9 AM (local time)
-                    const logoutDate = new Date(`${dateOnly}T17:00:00`); // 5 PM (local time)
-
-                    appData.logs[editingDayKey] = { mode: 'holiday', loginTime: loginDate.getTime(), logoutTime: logoutDate.getTime() };
-                } else if (mode === 'office') {
-                    const loginInput = DOM.editDayLoginInput.value; // e.g., '09:30'
-                    const logoutInput = DOM.editDayLogoutInput.value; // e.g., '18:00'
-
-                    if (!loginInput) {
-                        alert('Please enter a login time for office mode');
-                        return;
-                    }
-
-                    // FIX: Helper to combine the date key with the time input (HH:MM) to create a full local timestamp
-                    const createTimestampFromTimeInput = (timeInput) => {
-                        if (!timeInput) return null;
-                        // Combines the '2025-11-24' with 'T09:30' to get a full local date/time string
-                        const timestamp = new Date(`${dateOnly}T${timeInput}`).getTime();
-                        return isNaN(timestamp) ? null : timestamp;
-                    };
-
-                    const loginTime = createTimestampFromTimeInput(loginInput);
-                    const logoutTime = createTimestampFromTimeInput(logoutInput);
-                    const now = Date.now();
-
-                    if (loginTime > now || (logoutTime && logoutTime > now)) {
-                        alert('❌ Times cannot be in the future!');
-                        return;
-                    }
-
-                    if (logoutTime && logoutTime < loginTime) {
-                        alert('❌ Logout time cannot be before login time!');
-                        return;
-                    }
-
-                    appData.logs[editingDayKey] = { mode: 'office', loginTime, logoutTime };
+                let shouldDelete = true;
+                if (withConfirmation) {
+                    shouldDelete = confirm(`Are you sure you want to clear the record for ${DOM.editDayDate.textContent}?`);
                 }
-                saveData();
-                updateAnalytics();
-                closeEditDayModal();
 
-                if (editingDayKey === getTodayKey()) {
-                    checkTodayLog();
-                }
-            };
-
-            const deleteDay = () => {
-                if (!editingDayKey) return;
-                if (confirm(`Are you sure you want to delete the record for ${DOM.editDayDate.textContent}?`)) {
+                if (shouldDelete) {
                     delete appData.logs[editingDayKey];
                     saveData();
                     updateAnalytics();
@@ -1477,57 +1703,85 @@
                 }
             };
 
-            // =================================================================
-            // THEME TOGGLE LOGIC (Re-added)
-            // =================================================================
-            const setupThemeToggle = () => {
-                const body = document.body;
-                const toggleButton = document.getElementById('theme-toggle');
-                const iconSpan = document.getElementById('theme-icon');
-                const THEME_KEY = 'app-theme';
+            // FIX 3: Updated saveDayEdit to handle all three modes
+            const saveDayEdit = () => {
+                if (!editingDayKey) return;
 
-                // Function to apply the theme
-                const applyTheme = (theme) => {
-                    body.classList.remove('light-mode', 'dark-mode');
-                    let currentTheme;
+                const selectedMode = DOM.editDayModalContent.dataset.currentMode;
+                const dateKey = editingDayKey; // Use editingDayKey, not editingDayDayKey
+                const dateStart = createTimestampFromTimeInput(dateKey, '00:00'); // Timestamp for start of the day
 
-                    if (theme === 'dark') {
-                        body.classList.add('dark-mode');
-                        iconSpan.textContent = '☀️'; // Sun icon for dark mode
-                        currentTheme = 'dark';
-                    } else if (theme === 'light') {
-                        body.classList.add('light-mode');
-                        iconSpan.textContent = '🌙'; // Moon icon for light mode
-                        currentTheme = 'light';
-                    } else {
-                        // Check system preference if no saved theme
-                        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                        currentTheme = prefersDark ? 'dark' : 'light';
-                        iconSpan.textContent = prefersDark ? '☀️' : '🌙';
+                let newLog = { mode: selectedMode };
+
+                if (selectedMode === 'office') {
+                    const loginInput = DOM.editDayLoginInput.value;
+                    const logoutInput = DOM.editDayLogoutInput.value;
+
+                    const loginTime = createTimestampFromTimeInput(dateKey, loginInput);
+                    const logoutTime = createTimestampFromTimeInput(dateKey, logoutInput);
+                    const now = Date.now();
+
+                    // If both are empty, the user wants to delete/clear the log
+                    if (!loginInput && !logoutInput) {
+                        deleteDay(false);
+                        return;
                     }
-                    return currentTheme;
-                };
 
-                // Load saved theme on initialization
-                const savedTheme = localStorage.getItem(THEME_KEY);
-                applyTheme(savedTheme);
+                    // Validation for Office Mode
+                    if (!loginTime) {
+                        alert('❌ Please enter a login time for Office mode.');
+                        return;
+                    }
+                    if (loginTime > now || (logoutTime && logoutTime > now)) {
+                        alert('❌ Times cannot be in the future!');
+                        return;
+                    }
+                    if (logoutTime && logoutTime < loginTime) {
+                        alert('❌ Logout time cannot be before login time!');
+                        return;
+                    }
 
-                // Handle button click
-                toggleButton.addEventListener('click', () => {
-                    // Determine the current state based on applied class or system preference
-                    const isDark = body.classList.contains('dark-mode');
-                    const newTheme = isDark ? 'light' : 'dark';
+                    newLog.loginTime = loginTime;
+                    newLog.logoutTime = logoutTime;
 
-                    // Apply new theme and save preference
-                    applyTheme(newTheme);
-                    localStorage.setItem(THEME_KEY, newTheme);
-                });
+                } else if (selectedMode === 'holiday') {
+                    // Set default 8 hours for Holiday for calculation consistency
+                    newLog.loginTime = dateStart + (9 * 3600 * 1000);
+                    newLog.logoutTime = dateStart + (17 * 3600 * 1000);
+
+                } else if (selectedMode === 'wfh') {
+                    // WFH is just a marker, no times needed
+                    // Log structure remains { mode: 'wfh' }
+                }
+
+                appData.logs[editingDayKey] = newLog;
+                saveData();
+                updateAnalytics();
+                closeEditDayModal();
+
+                if (editingDayKey === getTodayKey()) {
+                    checkTodayLog();
+                }
             };
+
 
             // =================================================================
             // EVENT LISTENERS
             // =================================================================
             const setupEventListeners = () => {
+                // Theme Toggle
+                DOM.themeToggle.addEventListener('click', toggleTheme);
+
+                // New: Details Button Toggle
+                DOM.showDetailsBtn.addEventListener('click', () => {
+                    DOM.detailedEditSection.classList.toggle('hidden');
+                    // Change button text/icon based on state for better UX
+                    const isHidden = DOM.detailedEditSection.classList.contains('hidden');
+                    DOM.showDetailsBtn.innerHTML = isHidden
+                        ? '<i class="fas fa-info-circle"></i> Details'
+                        : '<i class="fas fa-times-circle"></i> Hide Details';
+                });
+
                 DOM.wfhBtn.addEventListener('click', showWFHScreen);
                 DOM.officeBtn.addEventListener('click', showOfficeScreen);
                 DOM.holidayBtn.addEventListener('click', showHolidayScreen);
@@ -1554,13 +1808,15 @@
                     showModeSelection();
                 });
 
-                // Modal Listeners
+                // Modal Mode Selectors (NEW)
+                DOM.editOfficeBtn.addEventListener('click', () => switchEditMode('office'));
+                DOM.editWfhBtn.addEventListener('click', () => switchEditMode('wfh'));
+                DOM.editHolidayBtn.addEventListener('click', () => switchEditMode('holiday'));
+
+                // Modal Actions
                 DOM.saveDayEditBtn.addEventListener('click', saveDayEdit);
-                DOM.deleteDayBtn.addEventListener('click', deleteDay);
+                DOM.deleteDayBtn.addEventListener('click', () => deleteDay(true));
                 DOM.cancelEditBtn.addEventListener('click', closeEditDayModal);
-                DOM.editModeSelect.addEventListener('change', (e) => {
-                    DOM.editOfficeTimes.classList[e.target.value === 'office' ? 'remove' : 'add']('hidden');
-                });
 
                 // Navigation
                 DOM.navToday.addEventListener('click', () => {
@@ -1592,14 +1848,13 @@
             // APP INITIALIZATION
             // =================================================================
             const initApp = () => {
+                initTheme(); // Initialize theme preference first
                 setupServiceWorker();
                 loadData();
                 updateCurrentDate();
                 checkTodayLog();
                 setupEventListeners();
-                setupThemeToggle(); // Re-initialized theme toggle
 
-                // Request notification permission after a delay
                 setTimeout(() => {
                     if ('Notification' in window && Notification.permission === 'default') {
                         requestNotificationPermission();
